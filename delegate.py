@@ -4,6 +4,7 @@ from PySide6.QtWidgets import QStyledItemDelegate
 
 
 class DigitDelegate(QStyledItemDelegate):
+    """Делегат ввода первоначальных данных в таблицу"""
     def __init__(self, parent=None):
         super().__init__(parent)
 
@@ -12,7 +13,7 @@ class DigitDelegate(QStyledItemDelegate):
 
         # Валидатор для одной цифры
 
-        validator = QRegularExpressionValidator("[1-9]", self)
+        validator = QRegularExpressionValidator("([1-9]|^$)", self)
         editor.setValidator(validator)
         editor.setMaxLength(1)
 
@@ -25,7 +26,7 @@ class DigitDelegate(QStyledItemDelegate):
         return editor
 
     def on_text_changed(self, editor, text):
-        """Автоматически завершаем ввод при вводе одного символа"""
+        """ Автоматически завершаем ввод при вводе одного символа """
         # Пытаемся безопасно закрыть редактор
         try:
             if editor and editor.isVisible() and editor.hasAcceptableInput():
