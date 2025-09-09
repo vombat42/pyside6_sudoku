@@ -63,7 +63,13 @@ class Ui_MainWindow(object):
         self.button_create.setGeometry(QRect(580, 10, 180, 60))
         self.button_step = QPushButton(self.centralwidget)
         self.button_step.setObjectName(u"button_step")
-        self.button_step.setGeometry(QRect(580, 80, 180, 60))
+        self.button_step.setGeometry(QRect(580, 220, 180, 60))
+        self.button_download = QPushButton(self.centralwidget)
+        self.button_download.setObjectName(u"button_download")
+        self.button_download.setGeometry(QRect(580, 150, 180, 60))
+        self.button_save = QPushButton(self.centralwidget)
+        self.button_save.setObjectName(u"button_save")
+        self.button_save.setGeometry(QRect(580, 80, 180, 60))
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
@@ -82,5 +88,7 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.button_create.setText(QCoreApplication.translate("MainWindow", u"\u0421\u043e\u0437\u0434\u0430\u0442\u044c", None))
         self.button_step.setText(QCoreApplication.translate("MainWindow", u"\u0428\u0430\u0433", None))
+        self.button_download.setText(QCoreApplication.translate("MainWindow", u"\u0417\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044c", None))
+        self.button_save.setText(QCoreApplication.translate("MainWindow", u"\u0421\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c", None))
     # retranslateUi
 

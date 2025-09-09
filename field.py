@@ -5,6 +5,7 @@ class Field:
     """Игровое поле 9х9"""
     __field = [[Cell() for col in range(9)] for row in range(9)]
     __is_done = False
+    # __file_save_name = 'field.save'
 
     def __init__(self):
         pass
@@ -33,3 +34,17 @@ class Field:
         self.__field[row][column].set_done(value) #значение корректно - записывем в ячейку
         return True
 
+
+    # def save_field(self):
+    #     try:
+    #         with open(self.__file_save_name, "w") as file:
+    #             for r in range(9):
+    #                 for c in range(9):
+    #                     if self.__field[r][c].get_value() != None:
+    #                         file.write(f"{r}{c}{self.__field[r][c].get_value()}\n")
+    #     except FileNotFoundError:
+    #          print("Невозможно открыть файл")
+    #     except:
+    #         print("Ошибка при работе с файлом")
+    #     finally:
+    #         print(file.closed)

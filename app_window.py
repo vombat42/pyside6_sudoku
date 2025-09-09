@@ -8,6 +8,8 @@ from ui_main_window import Ui_MainWindow
 
 class MainWindow(QMainWindow, Ui_MainWindow):
     """Главное окно приложения"""
+    __file_save_name = 'field.save'
+
     def __init__(self):
         super().__init__()
         self.setupUi(self)  # Это нужно для инициализации нашего дизайна
@@ -25,6 +27,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.button_step.setCheckable(True)
         self.button_step.clicked.connect(self.button_step_clicked)
+
+        self.button_save.setCheckable(True)
+        self.button_save.clicked.connect(self.button_save_clicked)
+
+        self.button_download.setCheckable(True)
+        self.button_download.clicked.connect(self.button_download_clicked)
 
         # Создаем игровое поле
         self.field = Field()
@@ -46,12 +54,53 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Запрещаем редактирование всех ячеек
         self.table.setEditTriggers(QTableWidget.NoEditTriggers)
         self.button_create.setDisabled(True)
+        self.button_save.setDisabled(True)
+        self.button_download.setDisabled(True)
+
+    def button_save_clicked(self):
+        print("Save!")
+        try:
+            with open(self.__file_save_name, "w") as file:
+                # Перебор всех строк и столбцов
+                for r in range(self.table.rowCount()):
+                    for c in range(self.table.columnCount()):
+                        item = self.table.item(r, c)
+                        if item is not None and item.text() != '':
+                            file.write(f"{r}{c}{item.text()}\n")
+        except FileNotFoundError:
+            print("Невозможно открыть файл")
+        except:
+            print("Ошибка при работе с файлом")
+        finally:
+            print("Файл успешно закрыт - ", file.closed)
+
+
+    def button_download_clicked(self):
+        print("Download!")
+        # очищаем поле и таблицу
+        self.field = Field()
+        # Перебор всех строк и столбцов и очистка заполненных
+        for r in range(self.table.rowCount()):
+            for c in range(self.table.columnCount()):
+                item = self.table.item(r, c)
+                if item is not None and item.text() != '':
+                    item.setText('')
+        # читаем данные из файла и заполняем поле и таблицу
+        try:
+            with open(self.__file_save_name) as file:
+                for s in file.readlines():
+                    self.field.set_cell_value(int(s[0]), int(s[1]), int(s[2]))
+                    self.table.setItem(int(s[0]), int(s[1]), QTableWidgetItem(s[2]))
+        except FileNotFoundError:
+            print("Невозможно открыть файл")
+        except:
+            print("Ошибка при работе с файлом")
+        finally:
+            print("Файл успешно закрыт - ", file.closed)
 
     def button_step_clicked(self):
-        print("Step!")
-        self.button_create.setEnabled(True)
-        item = QTableWidgetItem("2")
-        item.setForeground(QBrush(QColor("blue")))
-        item.setTextAlignment(4)
-        self.table.setItem(0, 5, item)
-
+        # item = QTableWidgetItem("2")
+        # item.setForeground(QBrush(QColor("blue")))
+        # item.setTextAlignment(4)
+        # self.table.setItem(0, 5, item)
+        pass

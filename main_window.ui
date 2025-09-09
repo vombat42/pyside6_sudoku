@@ -124,13 +124,39 @@ color: green;</string>
     <property name="geometry">
      <rect>
       <x>580</x>
-      <y>80</y>
+      <y>220</y>
       <width>180</width>
       <height>60</height>
      </rect>
     </property>
     <property name="text">
      <string>Шаг</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="button_download">
+    <property name="geometry">
+     <rect>
+      <x>580</x>
+      <y>150</y>
+      <width>180</width>
+      <height>60</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Загрузить</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="button_save">
+    <property name="geometry">
+     <rect>
+      <x>580</x>
+      <y>80</y>
+      <width>180</width>
+      <height>60</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Сохранить</string>
     </property>
    </widget>
   </widget>
