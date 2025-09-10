@@ -3,10 +3,12 @@ class Cell:
     """Ячейка таблицы"""
     __value = None
     __is_done = False # False - не определено значение ячейки, True - определено
-    __possible_values = set(range(1, 10)) # от 1 до 9
+    # __possible_values = set(range(1, 10)) # от 1 до 9
+    __possible_values = set() # от 1 до 9
 
 
     def __init__(self):
+        self.__possible_values = set(range(1, 10))  # от 1 до 9
         pass
 
     def get_value(self):

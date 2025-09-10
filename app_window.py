@@ -9,6 +9,7 @@ from ui_main_window import Ui_MainWindow
 class MainWindow(QMainWindow, Ui_MainWindow):
     """Главное окно приложения"""
     __file_save_name = 'field.save'
+    __new_value_list = list() # список новых найденных значений ячеек
 
     def __init__(self):
         super().__init__()
@@ -27,12 +28,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.button_step.setCheckable(True)
         self.button_step.clicked.connect(self.button_step_clicked)
+        self.button_step.setDisabled(True)
+
+        self.button_show_notes.setCheckable(True)
+        self.button_show_notes.clicked.connect(self.button_show_notes_clicked)
+        self.button_show_notes.setDisabled(True)
 
         self.button_save.setCheckable(True)
         self.button_save.clicked.connect(self.button_save_clicked)
 
         self.button_download.setCheckable(True)
         self.button_download.clicked.connect(self.button_download_clicked)
+
 
         # Создаем игровое поле
         self.field = Field()
@@ -53,9 +60,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         print("Clicked!")
         # Запрещаем редактирование всех ячеек
         self.table.setEditTriggers(QTableWidget.NoEditTriggers)
+        # Активируем/деактивируем кнопки
         self.button_create.setDisabled(True)
         self.button_save.setDisabled(True)
         self.button_download.setDisabled(True)
+        self.button_step.setDisabled(False)
+        self.button_show_notes.setDisabled(False)
+        # формируем список __new_value_list
+        for r in range(self.table.rowCount()):
+            for c in range(self.table.columnCount()):
+                item = self.table.item(r, c)
+                if item is not None and item.text() != '':
+                    self.__new_value_list.append({"row": r, "column": c, "value": int(item.text())})
+        print(self.__new_value_list)
+
 
     def button_save_clicked(self):
         print("Save!")
@@ -99,8 +117,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             print("Файл успешно закрыт - ", file.closed)
 
     def button_step_clicked(self):
-        # item = QTableWidgetItem("2")
-        # item.setForeground(QBrush(QColor("blue")))
-        # item.setTextAlignment(4)
-        # self.table.setItem(0, 5, item)
-        pass
+        print("Crossing out!")
+        self.field.crossing_out(self.__new_value_list)
+        self.__new_value_list = list()
+
+
+    def button_show_notes_clicked(self):
+        print(self.table.currentRow(), self.table.currentColumn(), '-', self.field.get_cell_possible_value(self.table.currentRow(), self.table.currentColumn()))

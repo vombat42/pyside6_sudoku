@@ -70,6 +70,9 @@ class Ui_MainWindow(object):
         self.button_save = QPushButton(self.centralwidget)
         self.button_save.setObjectName(u"button_save")
         self.button_save.setGeometry(QRect(580, 80, 180, 60))
+        self.button_show_notes = QPushButton(self.centralwidget)
+        self.button_show_notes.setObjectName(u"button_show_notes")
+        self.button_show_notes.setGeometry(QRect(580, 290, 180, 60))
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
@@ -90,5 +93,6 @@ class Ui_MainWindow(object):
         self.button_step.setText(QCoreApplication.translate("MainWindow", u"\u0428\u0430\u0433", None))
         self.button_download.setText(QCoreApplication.translate("MainWindow", u"\u0417\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044c", None))
         self.button_save.setText(QCoreApplication.translate("MainWindow", u"\u0421\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c", None))
+        self.button_show_notes.setText(QCoreApplication.translate("MainWindow", u"\u0417\u0430\u043c\u0435\u0442\u043a\u0438 \u044f\u0447\u0435\u0439\u043a\u0438", None))
     # retranslateUi
 
