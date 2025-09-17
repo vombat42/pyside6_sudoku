@@ -33,4 +33,5 @@ class Cell:
         if len(self.__possible_values) == 1:
             self.__is_done = True
             self.__value = self.__possible_values.pop()
+            print("check!!!", self.__value, type(self.__value))
         return self.__is_done

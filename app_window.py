@@ -34,6 +34,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.button_show_notes.clicked.connect(self.button_show_notes_clicked)
         self.button_show_notes.setDisabled(True)
 
+        self.button_one.setCheckable(True)
+        self.button_one.clicked.connect(self.button_one_clicked)
+        self.button_one.setDisabled(True)
+
+        self.button_two.setCheckable(True)
+        self.button_two.clicked.connect(self.button_two_clicked)
+        self.button_two.setDisabled(True)
+
         self.button_save.setCheckable(True)
         self.button_save.clicked.connect(self.button_save_clicked)
 
@@ -46,7 +54,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def on_cell_changed(self, row, column):
         """Обработчик изменения ячейки"""
-        print('changed')
+        # print('changed')
         item = self.table.item(row, column)
         if item and item.text() == '':
             self.field.clear_cell(row, column)
@@ -66,6 +74,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.button_download.setDisabled(True)
         self.button_step.setDisabled(False)
         self.button_show_notes.setDisabled(False)
+        self.button_one.setDisabled(False)
+        self.button_two.setDisabled(False)
         # формируем список __new_value_list
         for r in range(self.table.rowCount()):
             for c in range(self.table.columnCount()):
@@ -116,11 +126,34 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         finally:
             print("Файл успешно закрыт - ", file.closed)
 
+
     def button_step_clicked(self):
-        print("Crossing out!")
+        print("Crossing out!", self.__new_value_list)
         self.field.crossing_out(self.__new_value_list)
         self.__new_value_list = list()
 
 
+    def button_one_clicked(self):
+        print("Единицы!")
+        res = self.field.one()
+        if res:
+            # print(type(res[0]), res[1], res[2])
+            item = QTableWidgetItem(str(res[2]))
+            item.setForeground(QBrush(QColor(0, 0, 255)))
+            self.table.setItem(res[0], res[1], item)
+            # self.table.setItem(res[0], res[1], QTableWidgetItem(str(res[2])))
+            # __new_value_list
+            # self.field.crossing_out({"row": res[0], "column": res[1], "value": res[2]})
+            self.__new_value_list.append({"row": res[0], "column": res[1], "value": res[2]})
+            self.button_step_clicked()
+        else:
+            print('нет единиц')
+
+    def button_two_clicked(self):
+        print("Двойки!")
+
     def button_show_notes_clicked(self):
-        print(self.table.currentRow(), self.table.currentColumn(), '-', self.field.get_cell_possible_value(self.table.currentRow(), self.table.currentColumn()))
+        if self.field.get_cell_is_done(self.table.currentRow(), self.table.currentColumn()):
+            print('Cell is DONE!')
+        else:
+            print(self.table.currentRow(), self.table.currentColumn(), '-', self.field.get_cell_possible_value(self.table.currentRow(), self.table.currentColumn()))

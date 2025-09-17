@@ -172,6 +172,32 @@ color: green;</string>
      <string>Заметки ячейки</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="button_one">
+    <property name="geometry">
+     <rect>
+      <x>580</x>
+      <y>360</y>
+      <width>180</width>
+      <height>60</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Единицы</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="button_two">
+    <property name="geometry">
+     <rect>
+      <x>580</x>
+      <y>430</y>
+      <width>180</width>
+      <height>60</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Двойки</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
