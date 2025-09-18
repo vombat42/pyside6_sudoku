@@ -9,7 +9,7 @@ from ui_main_window import Ui_MainWindow
 class MainWindow(QMainWindow, Ui_MainWindow):
     """Главное окно приложения"""
     __file_save_name = 'field.save'
-    __new_value_list = list() # список новых найденных значений ячеек
+    # __new_value_list = list() # список новых найденных значений ячеек
 
     def __init__(self):
         super().__init__()
@@ -26,27 +26,35 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.button_create.setCheckable(True)
         self.button_create.clicked.connect(self.button_create_clicked)
 
-        self.button_step.setCheckable(True)
-        self.button_step.clicked.connect(self.button_step_clicked)
-        self.button_step.setDisabled(True)
-
-        self.button_show_notes.setCheckable(True)
-        self.button_show_notes.clicked.connect(self.button_show_notes_clicked)
-        self.button_show_notes.setDisabled(True)
-
-        self.button_one.setCheckable(True)
-        self.button_one.clicked.connect(self.button_one_clicked)
-        self.button_one.setDisabled(True)
-
-        self.button_two.setCheckable(True)
-        self.button_two.clicked.connect(self.button_two_clicked)
-        self.button_two.setDisabled(True)
-
         self.button_save.setCheckable(True)
         self.button_save.clicked.connect(self.button_save_clicked)
 
         self.button_download.setCheckable(True)
         self.button_download.clicked.connect(self.button_download_clicked)
+
+        self.button_notes.setCheckable(True)
+        self.button_notes.clicked.connect(self.button_notes_clicked)
+        self.button_notes.setDisabled(True)
+
+        self.button_single.setCheckable(True)
+        self.button_single.clicked.connect(self.button_single_clicked)
+        self.button_single.setDisabled(True)
+
+        self.button_naked_pair.setCheckable(True)
+        self.button_naked_pair.clicked.connect(self.button_naked_pair_clicked)
+        self.button_naked_pair.setDisabled(True)
+
+        self.button_hidden_pair.setCheckable(True)
+        self.button_hidden_pair.clicked.connect(self.button_hidden_pair_clicked)
+        self.button_hidden_pair.setDisabled(True)
+
+        self.button_naked_triple.setCheckable(True)
+        self.button_naked_triple.clicked.connect(self.button_naked_triple_clicked)
+        self.button_naked_triple.setDisabled(True)
+
+        self.button_hidden_triple.setCheckable(True)
+        self.button_hidden_triple.clicked.connect(self.button_hidden_triple_clicked)
+        self.button_hidden_triple.setDisabled(True)
 
 
         # Создаем игровое поле
@@ -72,17 +80,24 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.button_create.setDisabled(True)
         self.button_save.setDisabled(True)
         self.button_download.setDisabled(True)
-        self.button_step.setDisabled(False)
-        self.button_show_notes.setDisabled(False)
-        self.button_one.setDisabled(False)
-        self.button_two.setDisabled(False)
-        # формируем список __new_value_list
+        self.button_notes.setDisabled(False)
+        self.button_single.setDisabled(False)
+        self.button_naked_pair.setDisabled(False)
+        self.button_hidden_pair.setDisabled(False)
+        self.button_naked_triple.setDisabled(False)
+        self.button_naked_triple.setDisabled(False)
+        self.button_hidden_triple.setDisabled(False)
+        # формируем заметки
         for r in range(self.table.rowCount()):
             for c in range(self.table.columnCount()):
                 item = self.table.item(r, c)
                 if item is not None and item.text() != '':
-                    self.__new_value_list.append({"row": r, "column": c, "value": int(item.text())})
-        print(self.__new_value_list)
+                    self.field.crossing_out({"row": r, "column": c, "value": int(item.text())})
+                    # self.__new_value_list.append({"row": r, "column": c, "value": int(item.text())})
+        # print(self.__new_value_list)
+        # print("Crossing out!", self.__new_value_list)
+        # self.field.crossing_out(self.__new_value_list)
+        # self.__new_value_list = list()
 
 
     def button_save_clicked(self):
@@ -127,33 +142,38 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             print("Файл успешно закрыт - ", file.closed)
 
 
-    def button_step_clicked(self):
-        print("Crossing out!", self.__new_value_list)
-        self.field.crossing_out(self.__new_value_list)
-        self.__new_value_list = list()
-
-
-    def button_one_clicked(self):
-        print("Единицы!")
-        res = self.field.one()
-        if res:
-            # print(type(res[0]), res[1], res[2])
-            item = QTableWidgetItem(str(res[2]))
-            item.setForeground(QBrush(QColor(0, 0, 255)))
-            self.table.setItem(res[0], res[1], item)
-            # self.table.setItem(res[0], res[1], QTableWidgetItem(str(res[2])))
-            # __new_value_list
-            # self.field.crossing_out({"row": res[0], "column": res[1], "value": res[2]})
-            self.__new_value_list.append({"row": res[0], "column": res[1], "value": res[2]})
-            self.button_step_clicked()
-        else:
-            print('нет единиц')
-
-    def button_two_clicked(self):
-        print("Двойки!")
-
-    def button_show_notes_clicked(self):
+    def button_notes_clicked(self):
         if self.field.get_cell_is_done(self.table.currentRow(), self.table.currentColumn()):
             print('Cell is DONE!')
         else:
-            print(self.table.currentRow(), self.table.currentColumn(), '-', self.field.get_cell_possible_value(self.table.currentRow(), self.table.currentColumn()))
+            print(self.table.currentRow(), self.table.currentColumn(), '-',
+                  self.field.get_cell_possible_value(self.table.currentRow(), self.table.currentColumn()))
+
+    def button_single_clicked(self):
+        print("Единицы!")
+        res = self.field.hidden_single()
+        if res:
+            item = QTableWidgetItem(str(res[2]))
+            item.setForeground(QBrush(QColor(0, 0, 255)))
+            self.table.setItem(res[0], res[1], item)
+            self.field.crossing_out({"row": res[0], "column": res[1], "value": res[2]})
+            # self.__new_value_list.append({"row": res[0], "column": res[1], "value": res[2]})
+            # self.button_step_clicked()
+        else:
+            print('нет единиц')
+
+    def button_naked_pair_clicked(self):
+        print("Голые двойки!")
+        if self.field.naked_pair():
+            print('есть двойки')
+        else:
+            print('нет двоек')
+
+    def button_hidden_pair_clicked(self):
+        print("Скрытые двойки!")
+
+    def button_naked_triple_clicked(self):
+        print("Голые тройки!")
+
+    def button_hidden_triple_clicked(self):
+        print("Скрытые тройки!")

@@ -110,8 +110,8 @@ color: green;</string>
    <widget class="QPushButton" name="button_create">
     <property name="geometry">
      <rect>
-      <x>580</x>
-      <y>10</y>
+      <x>20</x>
+      <y>560</y>
       <width>180</width>
       <height>60</height>
      </rect>
@@ -120,24 +120,24 @@ color: green;</string>
      <string>Создать</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="button_step">
+   <widget class="QPushButton" name="button_hidden_pair">
     <property name="geometry">
      <rect>
-      <x>580</x>
-      <y>220</y>
+      <x>590</x>
+      <y>150</y>
       <width>180</width>
       <height>60</height>
      </rect>
     </property>
     <property name="text">
-     <string>Шаг</string>
+     <string>&quot;Скрытые пары&quot;</string>
     </property>
    </widget>
    <widget class="QPushButton" name="button_download">
     <property name="geometry">
      <rect>
-      <x>580</x>
-      <y>150</y>
+      <x>400</x>
+      <y>560</y>
       <width>180</width>
       <height>60</height>
      </rect>
@@ -149,8 +149,8 @@ color: green;</string>
    <widget class="QPushButton" name="button_save">
     <property name="geometry">
      <rect>
-      <x>580</x>
-      <y>80</y>
+      <x>210</x>
+      <y>560</y>
       <width>180</width>
       <height>60</height>
      </rect>
@@ -159,11 +159,11 @@ color: green;</string>
      <string>Сохранить</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="button_show_notes">
+   <widget class="QPushButton" name="button_notes">
     <property name="geometry">
      <rect>
-      <x>580</x>
-      <y>290</y>
+      <x>590</x>
+      <y>560</y>
       <width>180</width>
       <height>60</height>
      </rect>
@@ -172,30 +172,56 @@ color: green;</string>
      <string>Заметки ячейки</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="button_one">
+   <widget class="QPushButton" name="button_single">
     <property name="geometry">
      <rect>
-      <x>580</x>
-      <y>360</y>
+      <x>590</x>
+      <y>10</y>
       <width>180</width>
       <height>60</height>
      </rect>
     </property>
     <property name="text">
-     <string>Единицы</string>
+     <string>&quot;Одиночки&quot;</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="button_two">
+   <widget class="QPushButton" name="button_naked_pair">
     <property name="geometry">
      <rect>
-      <x>580</x>
-      <y>430</y>
+      <x>590</x>
+      <y>80</y>
       <width>180</width>
       <height>60</height>
      </rect>
     </property>
     <property name="text">
-     <string>Двойки</string>
+     <string>&quot;Голые пары&quot;</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="button_naked_triple">
+    <property name="geometry">
+     <rect>
+      <x>590</x>
+      <y>220</y>
+      <width>180</width>
+      <height>60</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&quot;Голые тройки&quot;</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="button_hidden_triple">
+    <property name="geometry">
+     <rect>
+      <x>590</x>
+      <y>290</y>
+      <width>180</width>
+      <height>60</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&quot;Скрытые тройки&quot;</string>
     </property>
    </widget>
   </widget>

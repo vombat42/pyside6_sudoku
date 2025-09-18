@@ -24,9 +24,15 @@ class Cell:
         self.__value = value
         self.__is_done = True
 
-    def discard_possible_value(self, value) -> bool:
+    def discard_possible_value(self, value):
         """Убирает из вариантов переданоое значение"""
         self.__possible_values.discard(value)
+
+    def discard_set_possible_value(self, values):
+        """Убирает из вариантов переданоое множество значений"""
+        for value in values:
+            print('discard', value)
+            self.__possible_values.discard(value)
 
     def check(self) -> bool:
         """Если остается один вариант, то устанавливает атрибуты и возвращает True"""
