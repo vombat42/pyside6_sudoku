@@ -15,14 +15,7 @@ def main():
     window =  MainWindow()
     window.show()  # Показываем окно
 
-    print("gogogog")
-
-    a = Cell()
-    print(a.get_possible_values())
-
-
-
-
+    print("Let's GO!")
 
     app.exec()  # и запускаем приложение
 

@@ -28,11 +28,19 @@ class Cell:
         """Убирает из вариантов переданоое значение"""
         self.__possible_values.discard(value)
 
-    def discard_set_possible_value(self, values):
+    def discard_set_possible_value(self, values) -> bool:
         """Убирает из вариантов переданоое множество значений"""
-        for value in values:
-            print('discard', value)
-            self.__possible_values.discard(value)
+        # for value in values:
+        #     print('try discard', value)
+        #     if self.__possible_values.discard(value):
+        #         print('discard', value)
+        temp = self.__possible_values - values
+        if temp == self.__possible_values:
+            # удалаять нечего
+            return False
+        self.__possible_values = temp
+        return True
+
 
     def check(self) -> bool:
         """Если остается один вариант, то устанавливает атрибуты и возвращает True"""

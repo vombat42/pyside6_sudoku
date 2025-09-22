@@ -1,5 +1,5 @@
 from PySide6.QtGui import QBrush, QColor
-from PySide6.QtWidgets import QMainWindow, QTableWidgetItem, QTableWidget
+from PySide6.QtWidgets import QMainWindow, QTableWidgetItem, QTableWidget, QFileDialog
 
 from delegate import DigitDelegate
 from field import Field
@@ -8,7 +8,7 @@ from ui_main_window import Ui_MainWindow
 
 class MainWindow(QMainWindow, Ui_MainWindow):
     """Главное окно приложения"""
-    __file_save_name = 'field.save'
+    # __file_save_name = 'saves/field.save'
     # __new_value_list = list() # список новых найденных значений ячеек
 
     def __init__(self):
@@ -60,6 +60,41 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Создаем игровое поле
         self.field = Field()
 
+    def save_file_dialog(parent=None):
+        """Диалог сохранения файла с выбором места и имени"""
+        file_path, _ = QFileDialog.getSaveFileName(
+            parent,
+            "Сохранить файл",  # Заголовок
+            "./saves",  # Начальная директория
+            "Файлы сохранений (*.save);;Все файлы (*)"  # Фильтры
+        )
+        if file_path:
+            # Добавляем расширение если его нет
+            if not file_path.endswith('.save'):
+                file_path += '.save'
+            print(f"Выбран файл: {file_path}")
+            return file_path
+        else:
+            print("Сохранение отменено")
+            return None
+
+
+    def open_file_dialog(parent=None):
+        """Диалог выбора файла для загрузки сохраненных заданий"""
+        # file_name, _ = QFileDialog.getOpenFileName(window, 'Open File', '', 'All Files ()')
+        file_path, _ = QFileDialog.getOpenFileName(
+            parent,
+            "Загрузить файл",  # Заголовок
+            "./saves",  # Начальная директория
+            "Файлы сохранений (*.save);;Все файлы (*)"  # Фильтры
+        )
+        if file_path and file_path.endswith('.save'):
+            print(f"Выбран файл: {file_path}")
+            return file_path
+        else:
+            print("Загрузка отменена")
+            return None
+
     def on_cell_changed(self, row, column):
         """Обработчик изменения ячейки"""
         # print('changed')
@@ -94,52 +129,53 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 if item is not None and item.text() != '':
                     self.field.crossing_out({"row": r, "column": c, "value": int(item.text())})
                     # self.__new_value_list.append({"row": r, "column": c, "value": int(item.text())})
-        # print(self.__new_value_list)
-        # print("Crossing out!", self.__new_value_list)
-        # self.field.crossing_out(self.__new_value_list)
-        # self.__new_value_list = list()
 
 
     def button_save_clicked(self):
         print("Save!")
-        try:
-            with open(self.__file_save_name, "w") as file:
-                # Перебор всех строк и столбцов
-                for r in range(self.table.rowCount()):
-                    for c in range(self.table.columnCount()):
-                        item = self.table.item(r, c)
-                        if item is not None and item.text() != '':
-                            file.write(f"{r}{c}{item.text()}\n")
-        except FileNotFoundError:
-            print("Невозможно открыть файл")
-        except:
-            print("Ошибка при работе с файлом")
-        finally:
-            print("Файл успешно закрыт - ", file.closed)
+        file_path = self.save_file_dialog()
+        if file_path:
+            # Сохраняем данные в файл
+            try:
+                with open(file_path, "w") as file:
+                    # Перебор всех строк и столбцов
+                    for r in range(self.table.rowCount()):
+                        for c in range(self.table.columnCount()):
+                            item = self.table.item(r, c)
+                            if item is not None and item.text() != '':
+                                file.write(f"{r}{c}{item.text()}\n")
+            except FileNotFoundError:
+                print("Невозможно открыть файл")
+            except:
+                print("Ошибка при работе с файлом")
+            finally:
+                print("Файл успешно закрыт - ", file.closed)
 
 
     def button_download_clicked(self):
         print("Download!")
-        # очищаем поле и таблицу
-        self.field = Field()
-        # Перебор всех строк и столбцов и очистка заполненных
-        for r in range(self.table.rowCount()):
-            for c in range(self.table.columnCount()):
-                item = self.table.item(r, c)
-                if item is not None and item.text() != '':
-                    item.setText('')
-        # читаем данные из файла и заполняем поле и таблицу
-        try:
-            with open(self.__file_save_name) as file:
-                for s in file.readlines():
-                    self.field.set_cell_value(int(s[0]), int(s[1]), int(s[2]))
-                    self.table.setItem(int(s[0]), int(s[1]), QTableWidgetItem(s[2]))
-        except FileNotFoundError:
-            print("Невозможно открыть файл")
-        except:
-            print("Ошибка при работе с файлом")
-        finally:
-            print("Файл успешно закрыт - ", file.closed)
+        file_path = self.open_file_dialog()
+        if file_path:
+            # очищаем поле и таблицу
+            self.field = Field()
+            # Перебор всех строк и столбцов и очистка заполненных
+            for r in range(self.table.rowCount()):
+                for c in range(self.table.columnCount()):
+                    item = self.table.item(r, c)
+                    if item is not None and item.text() != '':
+                        item.setText('')
+            # читаем данные из файла и заполняем поле и таблицу
+            try:
+                with open(file_path) as file:
+                    for s in file.readlines():
+                        self.field.set_cell_value(int(s[0]), int(s[1]), int(s[2]))
+                        self.table.setItem(int(s[0]), int(s[1]), QTableWidgetItem(s[2]))
+            except FileNotFoundError:
+                print("Невозможно открыть файл")
+            except:
+                print("Ошибка при работе с файлом")
+            finally:
+                print("Файл успешно закрыт - ", file.closed)
 
 
     def button_notes_clicked(self):
@@ -174,6 +210,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def button_naked_triple_clicked(self):
         print("Голые тройки!")
+        if not self.field.naked_triple():
+            print("больше нет голых троек")
 
     def button_hidden_triple_clicked(self):
         print("Скрытые тройки!")
