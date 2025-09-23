@@ -4,7 +4,7 @@ class Cell:
     __value = None
     __is_done = False # False - не определено значение ячейки, True - определено
     # __possible_values = set(range(1, 10)) # от 1 до 9
-    __possible_values = set() # от 1 до 9
+    # __possible_values = set() # от 1 до 9
 
 
     def __init__(self):
@@ -20,9 +20,15 @@ class Cell:
     def get_possible_values(self):
         return self.__possible_values
 
+    def set_possible_values(self, value):
+        self.__possible_values = value
+
     def set_done(self, value):
         self.__value = value
-        self.__is_done = True
+        if value != None:
+            self.__is_done = True
+        else:
+            self.__is_done = False
 
     def discard_possible_value(self, value):
         """Убирает из вариантов переданоое значение"""

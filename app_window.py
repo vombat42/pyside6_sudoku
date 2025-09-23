@@ -207,6 +207,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def button_hidden_pair_clicked(self):
         print("Скрытые двойки!")
+        if not self.field.hidden_pair():
+            print("больше нет скрытых пар")
 
     def button_naked_triple_clicked(self):
         print("Голые тройки!")
