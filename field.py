@@ -1,3 +1,5 @@
+import copy
+
 from cell import Cell
 
 
@@ -186,14 +188,13 @@ class Field:
                     if not item.get_is_done() and len(item.get_possible_values()) == 2:
                         result.append((r, c, item.get_possible_values()))
             # просмотр "двоек"
-            # print(block, "result", result)
             if len(result) > 1:
                 i = 0
                 for x in result[:-1]:
                     i += 1
                     for y in result[i:]:
                         if x[2] == y[2]:
-                            print('two finded in block! -', x[0], x[1], '<->', y[0], y[1], ':', x[2])
+                            # print('two finded in block! -', x[0], x[1], '<->', y[0], y[1], ':', x[2])
                             # вычеркиваем из других ячеек блока эту "двойку" и выходим из функции, возвращаем True
                             for r in range(r_start, r_start + 3):
                                 for c in range(c_start, c_start + 3):
@@ -218,7 +219,7 @@ class Field:
                     i += 1
                     for y in result[i:]:
                         if x[2] == y[2]:
-                            print('two finded in column! -', x[0], x[1], '<->', y[0], y[1], ':', x[2])
+                            # print('two finded in column! -', x[0], x[1], '<->', y[0], y[1], ':', x[2])
                             # вычеркиваем из других ячеек строки эту "двойку" и выходим из функции, возвращаем True
                             for c in range(9):
                                 item = self.__field[r][c]
@@ -242,7 +243,7 @@ class Field:
                     i += 1
                     for y in result[i:]:
                         if x[2] == y[2]:
-                            print('two finded in column! -', x[0], x[1], '<->', y[0], y[1], ':', x[2])
+                            # print('two finded in column! -', x[0], x[1], '<->', y[0], y[1], ':', x[2])
                             # вычеркиваем из других ячеек столбца эту "двойку"
                             for r in range(9):
                                 item = self.__field[r][c]
@@ -259,7 +260,6 @@ class Field:
             # стартовые координаты блока
             r_start, c_start = Field.block_coordinates(block)
             # просмотр блока, ищем ячейки, в которых три возможных значения
-            # result = list()
             for r in range(r_start, r_start + 3):
                 for c in range(c_start, c_start + 3):
                     item = self.__field[r][c]
@@ -269,7 +269,6 @@ class Field:
                         for r_next in range(r_start, r_start + 3):
                             for c_next in range(c_start, c_start + 3):
                                 item_next = self.__field[r_next][c_next]
-                                # if not item.get_is_done() and len(item_next.get_possible_values()) <= 3 and not (r_next == r and c_next == c):
                                 if not item_next.get_is_done() and item.get_possible_values() >= item_next.get_possible_values():
                                     result.append((r_next, c_next))
                         if len(result) > 3:
@@ -332,6 +331,7 @@ class Field:
                                 flag = True
         return flag
 
+
     def hidden_pair(self) -> bool:
         """Метод 'Скрытые пары'"""
         n = 2
@@ -340,12 +340,48 @@ class Field:
         empty_list = [None] * 9
         for i in range(9):
             empty_list[i] = list()
+        print("empty_list", empty_list)
+
+        def remove_unnecessary_values(i, j, param=None) -> bool:
+            """вспомогательная функция удаления лишних возможных значений"""
+            answer = False
+            if result[i] == result[j]:
+                # скрытая пара найдена, убираем лишние возможные значения (если они не убраны ранее)
+                r_1 = result[i][0][0]
+                r_2 = result[i][0][1]
+                c_1 = result[i][1][0]
+                c_2 = result[i][1][1]
+                item_1 = self.__field[r_1][c_1]
+                item_2 = self.__field[r_2][c_2]
+                values = {i + 1, j + 1}
+                if item_1.get_possible_values() != values or item_2.get_possible_values() != values:
+                    item_1.set_possible_values(values)
+                    item_2.set_possible_values(values)
+                    answer = True
+                # для блока - дополнительные проверки
+                if param == 'block':
+                    # если скрытая пара в одном блоке и в одной строке, то корректируем возможные значения по всей строке
+                    if r_1 == r_2:
+                        for col in range(9):
+                            if col not in {c_1, c_2} and not self.__field[r_1][col].get_is_done():
+                                if self.__field[r_1][col].discard_set_possible_value(values):
+                                    answer = True
+                    # если скрытая пара в одном блоке и в одном столбце, то корректируем возможные значения по всему столбцу
+                    if c_1 == c_2:
+                        for row in range(9):
+                            if row not in {r_1, r_2} and not self.__field[row][c_1].get_is_done():
+                                if self.__field[row][c_1].discard_set_possible_value(values):
+                                    answer = True
+            return answer
+
+
         # просмотр блоков с 1го по 9й
-        for block in range(9):
+        # for block in range(9):
+        for block in range(3, 4):
             # стартовые координаты блока
             r_start, c_start = Field.block_coordinates(block)
             # просмотр блока, ищем значения, которые есть только в двух ячейках блока
-            result = empty_list
+            result = copy.deepcopy(empty_list)
             for r in range(r_start, r_start + 3):
                 for c in range(c_start, c_start + 3):
                     item = self.__field[r][c]
@@ -356,31 +392,44 @@ class Field:
             for i in range(8):
                 if len(result[i]) == n:
                     for j in range(i+1, 9):
-                        if result[i] == result[j]:
-                            # скрытая пара найдена, убираем лишние возможные значения (если они не убраны ранее)
-                            r_1 = result[i][0][0]
-                            r_2 = result[i][0][1]
-                            c_1 = result[i][1][0]
-                            c_2 = result[i][1][1]
-                            item_1 = self.__field[r_1][c_1]
-                            item_2 = self.__field[r_2][c_2]
-                            values = {i+1, j+1}
-                            if item_1.get_possible_values() != values or item_2.get_possible_values() != values:
-                                item_1.set_possible_values(values)
-                                item_2.set_possible_values(values)
-                                flag = True
-                            # если скрытая пара в одном блоке и в одной строке, то корректируем возможные значения по всей строке
-                            if r_1 == r_2:
-                                for col in range(9):
-                                    if col not in {c_1, c_2} and not self.__field[r_1][col].get_is_done():
-                                        if self.__field[r_1][col].discard_set_possible_value(values):
-                                            flag = True
-                            # если скрытая пара в одном блоке и в одном столбце, то корректируем возможные значения по всему столбцу
-                            if c_1 == c_2:
-                                for row in range(9):
-                                    if row not in {r_1, r_2} and not self.__field[row][c_1].get_is_done():
-                                        if self.__field[row][c_1].discard_set_possible_value(values):
-                                            flag = True
+                        flag = remove_unnecessary_values(i, j, 'block')
+
+            print('--- block ---', block)
+            d = 1
+            for a in result:
+                print(d, a)
+                d += 1
+
+            # проходимся по result в поисках указывающих пар
+            # row_flag = True
+            # col_flag = True
+            value = 0
+
+
+            for number in result:
+                value += 1
+                row_flag = True
+                col_flag = True
+                print('----> look on', value)
+                if number:
+                    for i in range(len(number)-1):
+                        if number[i][0] != number[i+1][0]:
+                            row_flag = False
+                        if number[i][1] != number[i+1][1]:
+                            col_flag = False
+                    if row_flag:
+                        row = number[0][0]
+                        for col in range(9):
+                            if not (row, col) in number:
+                                print('указывающая пара в строке', row, '->', value)
+                                flag = self.__field[row][col].discard_set_possible_value({value})
+                    if col_flag:
+                        col = number[0][1]
+                        for row in range(9):
+                            if not (row, col) in number:
+                                print('указывающая пара в столбце', col, '->', value)
+                                flag = self.__field[row][col].discard_set_possible_value({value})
+
 
         # просмотр строк с 1й по 9ю
         for r in range(9):
@@ -395,19 +444,7 @@ class Field:
             for i in range(8):
                 if len(result[i]) == n:
                     for j in range(i+1, 9):
-                        if result[i] == result[j]:
-                            # скрытая пара найдена, убираем лишние возможные значения (если они не убраны ранее)
-                            r_1 = result[i][0][0]
-                            r_2 = result[i][0][1]
-                            c_1 = result[i][1][0]
-                            c_2 = result[i][1][1]
-                            item_1 = self.__field[r_1][c_1]
-                            item_2 = self.__field[r_2][c_2]
-                            values = {i+1, j+1}
-                            if item_1.get_possible_values() != values or item_2.get_possible_values() != values:
-                                item_1.set_possible_values(values)
-                                item_2.set_possible_values(values)
-                                flag = True
+                        flag = remove_unnecessary_values(i, j)
 
         # просмотр столбцов с 1го по 9й
         for c in range(9):
@@ -422,19 +459,28 @@ class Field:
             for i in range(8):
                 if len(result[i]) == n:
                     for j in range(i+1, 9):
-                        if result[i] == result[j]:
-                            # скрытая пара найдена, убираем лишние возможные значения (если они не убраны ранее)
-                            r_1 = result[i][0][0]
-                            r_2 = result[i][0][1]
-                            c_1 = result[i][1][0]
-                            c_2 = result[i][1][1]
-                            item_1 = self.__field[r_1][c_1]
-                            item_2 = self.__field[r_2][c_2]
-                            values = {i+1, j+1}
-                            if item_1.get_possible_values() != values or item_2.get_possible_values() != values:
-                                item_1.set_possible_values(values)
-                                item_2.set_possible_values(values)
-                                flag = True
+                        flag = remove_unnecessary_values(i, j)
 
         return flag
 
+    def pointing_pairs(self) -> bool:
+        """Метод 'Указывающие пары'"""
+        flag = False
+        # empty_list список из 9 списков
+        empty_list = [None] * 9
+        for i in range(9):
+            empty_list[i] = list()
+            # просмотр блоков с 1го по 9й
+            for block in range(9):
+                # стартовые координаты блока
+                r_start, c_start = Field.block_coordinates(block)
+                # просмотр блока, ищем значения, которые есть только в двух ячейках блока
+                result = empty_list
+                for r in range(r_start, r_start + 3):
+                    for c in range(c_start, c_start + 3):
+                        item = self.__field[r][c]
+                        if not item.get_is_done():
+                            for v in item.get_possible_values():
+                                result[v - 1].append((r, c))
+                # проходимся по result в поисках скрытых пар
+        return flag

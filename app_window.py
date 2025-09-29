@@ -113,7 +113,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.table.setEditTriggers(QTableWidget.NoEditTriggers)
         # Активируем/деактивируем кнопки
         self.button_create.setDisabled(True)
-        self.button_save.setDisabled(True)
+        # self.button_save.setDisabled(True)
         self.button_download.setDisabled(True)
         self.button_notes.setDisabled(False)
         self.button_single.setDisabled(False)
@@ -128,7 +128,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 item = self.table.item(r, c)
                 if item is not None and item.text() != '':
                     self.field.crossing_out({"row": r, "column": c, "value": int(item.text())})
-                    # self.__new_value_list.append({"row": r, "column": c, "value": int(item.text())})
 
 
     def button_save_clicked(self):
