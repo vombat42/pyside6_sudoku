@@ -374,7 +374,6 @@ class Field:
                                     answer = True
             return answer
 
-
         # просмотр блоков с 1го по 9й
         # for block in range(9):
         for block in range(3, 4):
@@ -393,19 +392,7 @@ class Field:
                 if len(result[i]) == n:
                     for j in range(i+1, 9):
                         flag = remove_unnecessary_values(i, j, 'block')
-
-            print('--- block ---', block)
-            d = 1
-            for a in result:
-                print(d, a)
-                d += 1
-
-            # проходимся по result в поисках указывающих пар
-            # row_flag = True
-            # col_flag = True
             value = 0
-
-
             for number in result:
                 value += 1
                 row_flag = True
@@ -463,24 +450,3 @@ class Field:
 
         return flag
 
-    def pointing_pairs(self) -> bool:
-        """Метод 'Указывающие пары'"""
-        flag = False
-        # empty_list список из 9 списков
-        empty_list = [None] * 9
-        for i in range(9):
-            empty_list[i] = list()
-            # просмотр блоков с 1го по 9й
-            for block in range(9):
-                # стартовые координаты блока
-                r_start, c_start = Field.block_coordinates(block)
-                # просмотр блока, ищем значения, которые есть только в двух ячейках блока
-                result = empty_list
-                for r in range(r_start, r_start + 3):
-                    for c in range(c_start, c_start + 3):
-                        item = self.__field[r][c]
-                        if not item.get_is_done():
-                            for v in item.get_possible_values():
-                                result[v - 1].append((r, c))
-                # проходимся по result в поисках скрытых пар
-        return flag
