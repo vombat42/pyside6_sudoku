@@ -1,6 +1,7 @@
 from PySide6.QtGui import QBrush, QColor
 from PySide6.QtWidgets import QMainWindow, QTableWidgetItem, QTableWidget, QFileDialog
 
+from cell_widget import CellWidget
 from delegate import DigitDelegate
 from field import Field
 from ui_main_window import Ui_MainWindow
@@ -56,6 +57,24 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.button_hidden_triple.clicked.connect(self.button_hidden_triple_clicked)
         self.button_hidden_triple.setDisabled(True)
 
+        self.button_a.setCheckable(True)
+        self.button_a.clicked.connect(self.button_a_clicked)
+
+        self.button_b.setCheckable(True)
+        self.button_b.clicked.connect(self.button_b_clicked)
+
+        self.button_c.setCheckable(True)
+        self.button_c.clicked.connect(self.button_c_clicked)
+        # ********************************************************************************
+        # self.one_cell = CellWidget(10, 20, 11, 16)
+        self.one_cell = CellWidget()
+        self.gl.addWidget(self.one_cell)
+
+        self.two_cell = CellWidget()
+        self.gl.addWidget(self.two_cell)
+
+        # # Устанавливаем виджет как центральный
+        # self.setCentralWidget(self.one_cell)
 
         # Создаем игровое поле
         self.field = Field()
@@ -216,3 +235,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def button_hidden_triple_clicked(self):
         print("Скрытые тройки!")
+
+
+    def button_a_clicked(self):
+        print("A")
+        self.one_cell.updateNotesList({2, 4, 8 ,9})
+        self.one_cell.showNotes(False)
+
+
+    def button_b_clicked(self):
+        print("B")
+        self.one_cell.showNotes(True)
+
+    def button_c_clicked(self):
+        print("C")
+        self.one_cell.updateNotesList({2, 4, 9})
