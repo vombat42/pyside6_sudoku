@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1572</width>
-    <height>671</height>
+    <height>877</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -110,8 +110,8 @@ color: green;</string>
    <widget class="QPushButton" name="button_create">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>560</y>
+      <x>0</x>
+      <y>770</y>
       <width>180</width>
       <height>60</height>
      </rect>
@@ -123,8 +123,8 @@ color: green;</string>
    <widget class="QPushButton" name="button_hidden_pair">
     <property name="geometry">
      <rect>
-      <x>590</x>
-      <y>150</y>
+      <x>1190</x>
+      <y>710</y>
       <width>180</width>
       <height>60</height>
      </rect>
@@ -136,8 +136,8 @@ color: green;</string>
    <widget class="QPushButton" name="button_download">
     <property name="geometry">
      <rect>
-      <x>400</x>
-      <y>560</y>
+      <x>380</x>
+      <y>770</y>
       <width>180</width>
       <height>60</height>
      </rect>
@@ -149,8 +149,8 @@ color: green;</string>
    <widget class="QPushButton" name="button_save">
     <property name="geometry">
      <rect>
-      <x>210</x>
-      <y>560</y>
+      <x>190</x>
+      <y>770</y>
       <width>180</width>
       <height>60</height>
      </rect>
@@ -162,8 +162,8 @@ color: green;</string>
    <widget class="QPushButton" name="button_notes">
     <property name="geometry">
      <rect>
-      <x>590</x>
-      <y>560</y>
+      <x>570</x>
+      <y>770</y>
       <width>180</width>
       <height>60</height>
      </rect>
@@ -175,8 +175,8 @@ color: green;</string>
    <widget class="QPushButton" name="button_single">
     <property name="geometry">
      <rect>
-      <x>590</x>
-      <y>10</y>
+      <x>1190</x>
+      <y>570</y>
       <width>180</width>
       <height>60</height>
      </rect>
@@ -188,8 +188,8 @@ color: green;</string>
    <widget class="QPushButton" name="button_naked_pair">
     <property name="geometry">
      <rect>
-      <x>590</x>
-      <y>80</y>
+      <x>1190</x>
+      <y>640</y>
       <width>180</width>
       <height>60</height>
      </rect>
@@ -201,8 +201,8 @@ color: green;</string>
    <widget class="QPushButton" name="button_naked_triple">
     <property name="geometry">
      <rect>
-      <x>590</x>
-      <y>220</y>
+      <x>990</x>
+      <y>560</y>
       <width>180</width>
       <height>60</height>
      </rect>
@@ -214,8 +214,8 @@ color: green;</string>
    <widget class="QPushButton" name="button_hidden_triple">
     <property name="geometry">
      <rect>
-      <x>590</x>
-      <y>290</y>
+      <x>990</x>
+      <y>630</y>
       <width>180</width>
       <height>60</height>
      </rect>
@@ -227,8 +227,8 @@ color: green;</string>
    <widget class="QWidget" name="gridLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>20</y>
+      <x>790</x>
+      <y>560</y>
       <width>191</width>
       <height>181</height>
      </rect>
@@ -465,10 +465,10 @@ color: green;</string>
    <widget class="QWidget" name="gridLayoutWidget_3">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>210</y>
-      <width>191</width>
-      <height>191</height>
+      <x>10</x>
+      <y>0</y>
+      <width>771</width>
+      <height>681</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gl" rowstretch="0" columnstretch="0">
@@ -495,8 +495,8 @@ color: green;</string>
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>410</y>
+      <x>790</x>
+      <y>760</y>
       <width>59</width>
       <height>59</height>
      </rect>
@@ -615,8 +615,8 @@ color: green;</string>
    <widget class="QPushButton" name="button_a">
     <property name="geometry">
      <rect>
-      <x>400</x>
-      <y>400</y>
+      <x>500</x>
+      <y>700</y>
       <width>71</width>
       <height>60</height>
      </rect>
@@ -628,8 +628,8 @@ color: green;</string>
    <widget class="QPushButton" name="button_b">
     <property name="geometry">
      <rect>
-      <x>490</x>
-      <y>400</y>
+      <x>590</x>
+      <y>700</y>
       <width>71</width>
       <height>60</height>
      </rect>
@@ -641,8 +641,8 @@ color: green;</string>
    <widget class="QPushButton" name="button_c">
     <property name="geometry">
      <rect>
-      <x>580</x>
-      <y>400</y>
+      <x>680</x>
+      <y>700</y>
       <width>71</width>
       <height>60</height>
      </rect>

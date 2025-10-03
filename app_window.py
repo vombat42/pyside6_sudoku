@@ -4,6 +4,7 @@ from PySide6.QtWidgets import QMainWindow, QTableWidgetItem, QTableWidget, QFile
 from cell_widget import CellWidget
 from delegate import DigitDelegate
 from field import Field
+from field_widget import FieldWidget
 from ui_main_window import Ui_MainWindow
 
 
@@ -65,16 +66,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.button_c.setCheckable(True)
         self.button_c.clicked.connect(self.button_c_clicked)
+
         # ********************************************************************************
-        # self.one_cell = CellWidget(10, 20, 11, 16)
-        self.one_cell = CellWidget()
-        self.gl.addWidget(self.one_cell)
+        # self.one_cell = CellWidget()
+        # self.gl.addWidget(self.one_cell)
+        #
+        # self.two_cell = CellWidget()
+        # self.gl.addWidget(self.two_cell)
 
-        self.two_cell = CellWidget()
-        self.gl.addWidget(self.two_cell)
+        self.field_widget = FieldWidget()
+        self.gl.addWidget(self.field_widget)
+        # ********************************************************************************
 
-        # # Устанавливаем виджет как центральный
-        # self.setCentralWidget(self.one_cell)
 
         # Создаем игровое поле
         self.field = Field()
@@ -176,6 +179,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if file_path:
             # очищаем поле и таблицу
             self.field = Field()
+            self.field_widget.clear()
             # Перебор всех строк и столбцов и очистка заполненных
             for r in range(self.table.rowCount()):
                 for c in range(self.table.columnCount()):
@@ -183,11 +187,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     if item is not None and item.text() != '':
                         item.setText('')
             # читаем данные из файла и заполняем поле и таблицу
+            max_lines = 81 # больше строк не читаем!
             try:
                 with open(file_path) as file:
                     for s in file.readlines():
-                        self.field.set_cell_value(int(s[0]), int(s[1]), int(s[2]))
-                        self.table.setItem(int(s[0]), int(s[1]), QTableWidgetItem(s[2]))
+                        r, c, v = int(s[0]), int(s[1]), s[2]
+                        self.field_widget.setItem(r, c, v)
+                        self.field.set_cell_value(r, c, int(v))
+                        self.table.setItem(r, c, QTableWidgetItem(v))
+                        max_lines -= 1
+                        if max_lines <= 0:
+                            break
             except FileNotFoundError:
                 print("Невозможно открыть файл")
             except:
@@ -239,14 +249,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def button_a_clicked(self):
         print("A")
-        self.one_cell.updateNotesList({2, 4, 8 ,9})
-        self.one_cell.showNotes(False)
+        self.field_widget.showNotes(True)
 
 
     def button_b_clicked(self):
         print("B")
-        self.one_cell.showNotes(True)
+        self.field_widget.showNotes(False)
 
     def button_c_clicked(self):
         print("C")
-        self.one_cell.updateNotesList({2, 4, 9})
+        self.field_widget.setItem(2, 3, '5')
