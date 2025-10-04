@@ -3,9 +3,6 @@ class Cell:
     """Ячейка таблицы"""
     __value = None
     __is_done = False # False - не определено значение ячейки, True - определено
-    # __possible_values = set(range(1, 10)) # от 1 до 9
-    # __possible_values = set() # от 1 до 9
-
 
     def __init__(self):
         self.__possible_values = set(range(1, 10))  # от 1 до 9
@@ -36,10 +33,6 @@ class Cell:
 
     def discard_set_possible_value(self, values) -> bool:
         """Убирает из вариантов переданоое множество значений"""
-        # for value in values:
-        #     print('try discard', value)
-        #     if self.__possible_values.discard(value):
-        #         print('discard', value)
         temp = self.__possible_values - values
         if temp == self.__possible_values:
             # удалаять нечего

@@ -1,7 +1,6 @@
 from PySide6.QtGui import QBrush, QColor
 from PySide6.QtWidgets import QMainWindow, QTableWidgetItem, QTableWidget, QFileDialog
 
-from cell_widget import CellWidget
 from delegate import DigitDelegate
 from field import Field
 from field_widget import FieldWidget
@@ -10,9 +9,6 @@ from ui_main_window import Ui_MainWindow
 
 class MainWindow(QMainWindow, Ui_MainWindow):
     """Главное окно приложения"""
-    # __file_save_name = 'saves/field.save'
-    # __new_value_list = list() # список новых найденных значений ячеек
-
     def __init__(self):
         super().__init__()
         self.setupUi(self)  # Это нужно для инициализации нашего дизайна
@@ -67,20 +63,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.button_c.setCheckable(True)
         self.button_c.clicked.connect(self.button_c_clicked)
 
-        # ********************************************************************************
-        # self.one_cell = CellWidget()
-        # self.gl.addWidget(self.one_cell)
-        #
-        # self.two_cell = CellWidget()
-        # self.gl.addWidget(self.two_cell)
-
         self.field_widget = FieldWidget()
         self.gl.addWidget(self.field_widget)
-        # ********************************************************************************
-
 
         # Создаем игровое поле
         self.field = Field()
+
+    def update_notes_in_field(self):
+        """обновляет заметки в виджете игрового поля"""
+        for r in range(9):
+            for c in range(9):
+                self.field_widget.setNotes(r, c, self.field.get_cell_possible_value(r, c))
 
     def save_file_dialog(parent=None):
         """Диалог сохранения файла с выбором места и имени"""
@@ -150,6 +143,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 item = self.table.item(r, c)
                 if item is not None and item.text() != '':
                     self.field.crossing_out({"row": r, "column": c, "value": int(item.text())})
+
+        self.update_notes_in_field()
+
 
 
     def button_save_clicked(self):
@@ -221,27 +217,31 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             item.setForeground(QBrush(QColor(0, 0, 255)))
             self.table.setItem(res[0], res[1], item)
             self.field.crossing_out({"row": res[0], "column": res[1], "value": res[2]})
-            # self.__new_value_list.append({"row": res[0], "column": res[1], "value": res[2]})
-            # self.button_step_clicked()
+            self.field_widget.setItem(res[0], res[1], str(res[2]))
+            self.update_notes_in_field()
         else:
             print('нет единиц')
 
     def button_naked_pair_clicked(self):
         print("Голые двойки!")
-        if self.field.naked_pair():
-            print('есть двойки')
+        if not self.field.naked_pair():
+            print('больше нет двоек')
         else:
-            print('нет двоек')
+            self.update_notes_in_field()
 
     def button_hidden_pair_clicked(self):
         print("Скрытые двойки!")
         if not self.field.hidden_pair():
             print("больше нет скрытых пар")
+        else:
+            self.update_notes_in_field()
 
     def button_naked_triple_clicked(self):
         print("Голые тройки!")
         if not self.field.naked_triple():
             print("больше нет голых троек")
+        else:
+            self.update_notes_in_field()
 
     def button_hidden_triple_clicked(self):
         print("Скрытые тройки!")

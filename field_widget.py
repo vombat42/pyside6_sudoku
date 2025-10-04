@@ -13,7 +13,7 @@ class FieldWidget(QWidget):
 
     def init_fieldwidget(self):
         """Конструктор"""
-        # ФИКСИРУЕМ РАЗМЕР ВИДЖЕТА
+        # фиксированный размер виджета
         self.setFixedSize(600, 600)  # ширина, высота
 
         # Словарь для хранения ссылок на виджеты ячеек
@@ -22,12 +22,9 @@ class FieldWidget(QWidget):
         self.fieldLayout = QGridLayout()
 
         for i in range(81):
-            # print(str(i+1), i // 9, i % 9)
-            widget = CellWidget('')
+            widget = CellWidget()
             self.fieldLayout.addWidget(widget, i // 9, i % 9, 1, 1)
-            # self.fieldLayout.addWidget(self.cells_list[i], i // 9, i % 9, 1, 1)
             self.cell_widgets[(i // 9, i % 9)] = widget
-
 
         # Устанавливаем layout для виджета
         self.setLayout(self.fieldLayout)
@@ -37,11 +34,15 @@ class FieldWidget(QWidget):
         """Установка значения в ячейку"""
         self.cell_widgets[(row,column)].setValue(value)
 
+
     def clear(self):
         for key, item in self.cell_widgets.items():
             item.clear()
+
 
     def showNotes(self, is_visible):
         for key, item in self.cell_widgets.items():
             item.showNotes(is_visible)
 
+    def setNotes(self, row, column, notes_list):
+        self.cell_widgets[(row, column)].setNotes(notes_list)
