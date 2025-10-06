@@ -6,112 +6,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1572</width>
-    <height>877</height>
+    <width>1011</width>
+    <height>819</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QTableWidget" name="table">
-    <property name="geometry">
-     <rect>
-      <x>790</x>
-      <y>10</y>
-      <width>540</width>
-      <height>540</height>
-     </rect>
-    </property>
-    <property name="sizePolicy">
-     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-      <horstretch>0</horstretch>
-      <verstretch>0</verstretch>
-     </sizepolicy>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>540</width>
-      <height>540</height>
-     </size>
-    </property>
-    <property name="maximumSize">
-     <size>
-      <width>540</width>
-      <height>540</height>
-     </size>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>16</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="autoFillBackground">
-     <bool>false</bool>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background: lightblue;
-color: green;</string>
-    </property>
-    <property name="verticalScrollBarPolicy">
-     <enum>Qt::ScrollBarAlwaysOff</enum>
-    </property>
-    <property name="horizontalScrollBarPolicy">
-     <enum>Qt::ScrollBarAlwaysOff</enum>
-    </property>
-    <property name="cornerButtonEnabled">
-     <bool>false</bool>
-    </property>
-    <property name="rowCount">
-     <number>9</number>
-    </property>
-    <property name="columnCount">
-     <number>9</number>
-    </property>
-    <attribute name="horizontalHeaderVisible">
-     <bool>false</bool>
-    </attribute>
-    <attribute name="horizontalHeaderMinimumSectionSize">
-     <number>60</number>
-    </attribute>
-    <attribute name="horizontalHeaderDefaultSectionSize">
-     <number>60</number>
-    </attribute>
-    <attribute name="verticalHeaderVisible">
-     <bool>false</bool>
-    </attribute>
-    <attribute name="verticalHeaderMinimumSectionSize">
-     <number>60</number>
-    </attribute>
-    <attribute name="verticalHeaderDefaultSectionSize">
-     <number>60</number>
-    </attribute>
-    <row/>
-    <row/>
-    <row/>
-    <row/>
-    <row/>
-    <row/>
-    <row/>
-    <row/>
-    <row/>
-    <column/>
-    <column/>
-    <column/>
-    <column/>
-    <column/>
-    <column/>
-    <column/>
-    <column/>
-    <column/>
-   </widget>
    <widget class="QPushButton" name="button_create">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>770</y>
+      <x>10</x>
+      <y>700</y>
       <width>180</width>
       <height>60</height>
      </rect>
@@ -123,8 +30,8 @@ color: green;</string>
    <widget class="QPushButton" name="button_hidden_pair">
     <property name="geometry">
      <rect>
-      <x>1190</x>
-      <y>710</y>
+      <x>800</x>
+      <y>150</y>
       <width>180</width>
       <height>60</height>
      </rect>
@@ -136,8 +43,8 @@ color: green;</string>
    <widget class="QPushButton" name="button_download">
     <property name="geometry">
      <rect>
-      <x>380</x>
-      <y>770</y>
+      <x>390</x>
+      <y>700</y>
       <width>180</width>
       <height>60</height>
      </rect>
@@ -149,8 +56,8 @@ color: green;</string>
    <widget class="QPushButton" name="button_save">
     <property name="geometry">
      <rect>
-      <x>190</x>
-      <y>770</y>
+      <x>200</x>
+      <y>700</y>
       <width>180</width>
       <height>60</height>
      </rect>
@@ -159,24 +66,11 @@ color: green;</string>
      <string>Сохранить</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="button_notes">
-    <property name="geometry">
-     <rect>
-      <x>570</x>
-      <y>770</y>
-      <width>180</width>
-      <height>60</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Заметки ячейки</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="button_single">
     <property name="geometry">
      <rect>
-      <x>1190</x>
-      <y>570</y>
+      <x>800</x>
+      <y>10</y>
       <width>180</width>
       <height>60</height>
      </rect>
@@ -188,8 +82,8 @@ color: green;</string>
    <widget class="QPushButton" name="button_naked_pair">
     <property name="geometry">
      <rect>
-      <x>1190</x>
-      <y>640</y>
+      <x>800</x>
+      <y>80</y>
       <width>180</width>
       <height>60</height>
      </rect>
@@ -201,8 +95,8 @@ color: green;</string>
    <widget class="QPushButton" name="button_naked_triple">
     <property name="geometry">
      <rect>
-      <x>990</x>
-      <y>560</y>
+      <x>800</x>
+      <y>220</y>
       <width>180</width>
       <height>60</height>
      </rect>
@@ -214,8 +108,8 @@ color: green;</string>
    <widget class="QPushButton" name="button_hidden_triple">
     <property name="geometry">
      <rect>
-      <x>990</x>
-      <y>630</y>
+      <x>800</x>
+      <y>290</y>
       <width>180</width>
       <height>60</height>
      </rect>
@@ -224,249 +118,11 @@ color: green;</string>
      <string>&quot;Скрытые тройки&quot;</string>
     </property>
    </widget>
-   <widget class="QWidget" name="gridLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>790</x>
-      <y>560</y>
-      <width>191</width>
-      <height>181</height>
-     </rect>
-    </property>
-    <layout class="QGridLayout" name="field_layout">
-     <property name="leftMargin">
-      <number>0</number>
-     </property>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_5">
-       <property name="maximumSize">
-        <size>
-         <width>50</width>
-         <height>50</height>
-        </size>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::Box</enum>
-       </property>
-       <property name="text">
-        <string>8</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="maximumSize">
-        <size>
-         <width>50</width>
-         <height>50</height>
-        </size>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::Box</enum>
-       </property>
-       <property name="text">
-        <string>8</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_3">
-       <property name="maximumSize">
-        <size>
-         <width>50</width>
-         <height>50</height>
-        </size>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::Box</enum>
-       </property>
-       <property name="text">
-        <string>8</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QLabel" name="label_7">
-       <property name="maximumSize">
-        <size>
-         <width>50</width>
-         <height>50</height>
-        </size>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::Box</enum>
-       </property>
-       <property name="text">
-        <string>8</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="2">
-      <widget class="QLabel" name="label_8">
-       <property name="maximumSize">
-        <size>
-         <width>50</width>
-         <height>50</height>
-        </size>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::Box</enum>
-       </property>
-       <property name="text">
-        <string>8</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QLabel" name="label_10">
-       <property name="maximumSize">
-        <size>
-         <width>50</width>
-         <height>50</height>
-        </size>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::Box</enum>
-       </property>
-       <property name="text">
-        <string>8</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <layout class="QGridLayout" name="gridLayout">
-       <item row="0" column="0">
-        <widget class="QLabel" name="label">
-         <property name="maximumSize">
-          <size>
-           <width>15</width>
-           <height>15</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>8</pointsize>
-          </font>
-         </property>
-         <property name="frameShape">
-          <enum>QFrame::Box</enum>
-         </property>
-         <property name="text">
-          <string>1</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label_6">
-         <property name="maximumSize">
-          <size>
-           <width>15</width>
-           <height>15</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>8</pointsize>
-          </font>
-         </property>
-         <property name="frameShape">
-          <enum>QFrame::Box</enum>
-         </property>
-         <property name="text">
-          <string>2</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QLabel" name="label_9">
-         <property name="maximumSize">
-          <size>
-           <width>15</width>
-           <height>15</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>8</pointsize>
-          </font>
-         </property>
-         <property name="frameShape">
-          <enum>QFrame::Box</enum>
-         </property>
-         <property name="text">
-          <string>3</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="label_4">
-         <property name="maximumSize">
-          <size>
-           <width>15</width>
-           <height>15</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>8</pointsize>
-          </font>
-         </property>
-         <property name="frameShape">
-          <enum>QFrame::Box</enum>
-         </property>
-         <property name="text">
-          <string>1</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="2">
-        <widget class="QLabel" name="label_11">
-         <property name="maximumSize">
-          <size>
-           <width>15</width>
-           <height>15</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>8</pointsize>
-          </font>
-         </property>
-         <property name="frameShape">
-          <enum>QFrame::Box</enum>
-         </property>
-         <property name="text">
-          <string>1</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-    </layout>
-   </widget>
    <widget class="QWidget" name="gridLayoutWidget_3">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>0</y>
+      <y>10</y>
       <width>771</width>
       <height>681</height>
      </rect>
@@ -492,131 +148,11 @@ color: green;</string>
      </property>
     </layout>
    </widget>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>790</x>
-      <y>760</y>
-      <width>59</width>
-      <height>59</height>
-     </rect>
-    </property>
-    <layout class="QGridLayout" name="gridLayout_2">
-     <property name="spacing">
-      <number>0</number>
-     </property>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_12">
-       <property name="maximumSize">
-        <size>
-         <width>15</width>
-         <height>15</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>8</pointsize>
-        </font>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::Box</enum>
-       </property>
-       <property name="text">
-        <string>1</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_13">
-       <property name="maximumSize">
-        <size>
-         <width>15</width>
-         <height>15</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>8</pointsize>
-        </font>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::Box</enum>
-       </property>
-       <property name="text">
-        <string>2</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QLabel" name="label_14">
-       <property name="maximumSize">
-        <size>
-         <width>15</width>
-         <height>15</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>8</pointsize>
-        </font>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::Box</enum>
-       </property>
-       <property name="text">
-        <string>3</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_15">
-       <property name="maximumSize">
-        <size>
-         <width>15</width>
-         <height>15</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>8</pointsize>
-        </font>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::Box</enum>
-       </property>
-       <property name="text">
-        <string>1</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="2">
-      <widget class="QLabel" name="label_16">
-       <property name="maximumSize">
-        <size>
-         <width>15</width>
-         <height>15</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>8</pointsize>
-        </font>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::Box</enum>
-       </property>
-       <property name="text">
-        <string>1</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
    <widget class="QPushButton" name="button_a">
     <property name="geometry">
      <rect>
-      <x>500</x>
-      <y>700</y>
+      <x>800</x>
+      <y>450</y>
       <width>71</width>
       <height>60</height>
      </rect>
@@ -628,8 +164,8 @@ color: green;</string>
    <widget class="QPushButton" name="button_b">
     <property name="geometry">
      <rect>
-      <x>590</x>
-      <y>700</y>
+      <x>800</x>
+      <y>520</y>
       <width>71</width>
       <height>60</height>
      </rect>
@@ -638,24 +174,11 @@ color: green;</string>
      <string>B</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="button_c">
-    <property name="geometry">
-     <rect>
-      <x>680</x>
-      <y>700</y>
-      <width>71</width>
-      <height>60</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>C</string>
-    </property>
-   </widget>
    <widget class="QCheckBox" name="notes_box">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>720</y>
+      <x>800</x>
+      <y>370</y>
       <width>171</width>
       <height>23</height>
      </rect>
@@ -673,7 +196,7 @@ color: green;</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1572</width>
+     <width>1011</width>
      <height>22</height>
     </rect>
    </property>

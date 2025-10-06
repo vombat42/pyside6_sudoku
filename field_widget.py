@@ -69,23 +69,19 @@ class FieldWidget(QWidget):
         if key in (Qt.Key_Delete, Qt.Key_Backspace) :
             # очистка ячейки возможна, если идет процесс задания условия задачи
             if not self.is_being_solved or self.cell_widgets[self.active_cell_index].getValue() == '':
-                # передаем сигнал об очистке ячейки - словарь с ключами (row, column, old_value, new_value)
-                # self.signal_cell_changed.emit(self.active_cell_index // 9, self.active_cell_index % 9, '')
+                # передаем сигнал об очистке ячейки - словарь с ключами (row, column, new_value)
                 self.signal_cell_changed.emit({'row': self.active_cell_index // 9,
                                                'column': self.active_cell_index % 9,
-                                               'old_value': '',
                                                'new_value': ''})
                 self.cell_widgets[self.active_cell_index].clear()
         # elif key in (Qt.Key_1, Qt.Key_2, Qt.Key_3, Qt.Key_4, Qt.Key_5, Qt.Key_6, Qt.Key_7, Qt.Key_8, Qt.Key_9) :
         elif text in ('1', '2', '3', '4', '5', '6', '7', '8', '9'):
             # изменение ячейки возможно, если идет процесс задания условия задачи, или если ячейка еще не заполнена
             if not self.is_being_solved or self.cell_widgets[self.active_cell_index].getValue() == '':
-                # передаем сигнал об изменении ячейки (row, column, value)
+                # передаем сигнал об изменении ячейки  - словарь с ключами (row, column, new_value)
                 self.signal_cell_changed.emit({'row': self.active_cell_index // 9,
                                                'column': self.active_cell_index % 9,
-                                               'old_value': self.cell_widgets[self.active_cell_index].getValue(),
                                                'new_value': text})
-                # self.cell_widgets[self.active_cell_index].setValue(text)
         elif key == Qt.Key_Up:
             self.set_active_cell(self.active_cell_index - 9)
         elif key == Qt.Key_Down:

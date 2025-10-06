@@ -1,7 +1,6 @@
-from PySide6.QtGui import QBrush, QColor
-from PySide6.QtWidgets import QMainWindow, QTableWidgetItem, QTableWidget, QFileDialog
+from PySide6.QtWidgets import QMainWindow, QFileDialog
 
-from delegate import DigitDelegate
+
 from field import Field
 from field_widget import FieldWidget
 from ui_main_window import Ui_MainWindow
@@ -15,12 +14,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.setWindowTitle("sudoku")
 
-        # Устанавливаем кастомный делегат для всех ячеек
-        self.table.setItemDelegate(DigitDelegate(self.table))
-
-        # Подключаем сигнал завершения редактирования
-        self.table.cellChanged.connect(self.on_cell_changed)
-
         self.button_create.setCheckable(True)
         self.button_create.clicked.connect(self.button_create_clicked)
 
@@ -30,9 +23,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.button_download.setCheckable(True)
         self.button_download.clicked.connect(self.button_download_clicked)
 
-        self.button_notes.setCheckable(True)
-        self.button_notes.clicked.connect(self.button_notes_clicked)
-        self.button_notes.setDisabled(True)
 
         self.button_single.setCheckable(True)
         self.button_single.clicked.connect(self.button_single_clicked)
@@ -60,8 +50,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.button_b.setCheckable(True)
         self.button_b.clicked.connect(self.button_b_clicked)
 
-        self.button_c.setCheckable(True)
-        self.button_c.clicked.connect(self.button_c_clicked)
 
         # CheckBox "показать заметки"
         self.notes_box.setCheckable(True)
@@ -89,18 +77,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.field_widget.setValue(info['row'], info['column'], info['new_value'])
                 self.field.crossing_out({"row": info['row'], "column": info['column'], "value": int(info['new_value'])})
                 self.update_notes_in_field()
-            # else:
-            #     self.field_widget.setValue(info['row'], info['column'], info['old_value'])
 
 
     def notes_box_changed(self):
         self.field_widget.showNotes(self.notes_box.isChecked())
+
 
     def update_notes_in_field(self):
         """обновляет заметки в виджете игрового поля"""
         for r in range(9):
             for c in range(9):
                 self.field_widget.setNotes(r, c, self.field.get_cell_possible_value(r, c))
+
 
     def save_file_dialog(parent=None):
         """Диалог сохранения файла с выбором места и имени"""
@@ -138,27 +126,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             return None
 
 
-    def on_cell_changed(self, row, column):
-        """Обработчик изменения ячейки"""
-        # print('changed')
-        item = self.table.item(row, column)
-        if item and item.text() == '':
-            self.field.clear_cell(row, column)
-        if item and item.text():
-            print(f"Ячейка [{row},{column}]: {item.text()}")
-            if not self.field.set_cell_value(row, column, int(item.text())):
-                item.setText('')
-
-
     def button_create_clicked(self):
         print("Clicked!")
-        # Запрещаем редактирование всех ячеек
-        self.table.setEditTriggers(QTableWidget.NoEditTriggers)
         # Активируем/деактивируем кнопки
         self.button_create.setDisabled(True)
         # self.button_save.setDisabled(True)
         self.button_download.setDisabled(True)
-        self.button_notes.setDisabled(False)
         self.button_single.setDisabled(False)
         self.button_naked_pair.setDisabled(False)
         self.button_hidden_pair.setDisabled(False)
@@ -166,11 +139,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.button_naked_triple.setDisabled(False)
         self.button_hidden_triple.setDisabled(False)
         # формируем заметки
-        for r in range(self.table.rowCount()):
-            for c in range(self.table.columnCount()):
-                item = self.table.item(r, c)
-                if item is not None and item.text() != '':
-                    self.field.crossing_out({"row": r, "column": c, "value": int(item.text())})
+        for r in range(9):
+            for c in range(9):
+                value = self.field_widget.get_cell_value(r, c)
+                if value != '':
+                    self.field.crossing_out({"row": r, "column": c, "value": int(value)})
 
         self.update_notes_in_field()
         self.field_widget.set_is_being_solved()
@@ -185,11 +158,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             try:
                 with open(file_path, "w") as file:
                     # Перебор всех строк и столбцов
-                    for r in range(self.table.rowCount()):
-                        for c in range(self.table.columnCount()):
-                            item = self.table.item(r, c)
-                            if item is not None and item.text() != '':
-                                file.write(f"{r}{c}{item.text()}\n")
+                    for row in range(9):
+                        for column in range(9):
+                            value = self.field_widget.get_cell_value(row, column)
+                            if value != '':
+                                file.write(f"{row}{column}{value}\n")
             except FileNotFoundError:
                 print("Невозможно открыть файл")
             except:
@@ -205,12 +178,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             # очищаем поле и таблицу
             self.field = Field()
             self.field_widget.clear()
-            # Перебор всех строк и столбцов и очистка заполненных
-            for r in range(self.table.rowCount()):
-                for c in range(self.table.columnCount()):
-                    item = self.table.item(r, c)
-                    if item is not None and item.text() != '':
-                        item.setText('')
             # читаем данные из файла и заполняем поле и таблицу
             max_lines = 81 # больше строк не читаем!
             try:
@@ -219,7 +186,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         r, c, v = int(s[0]), int(s[1]), s[2]
                         self.field_widget.setValue(r, c, v)
                         self.field.set_cell_value(r, c, int(v))
-                        self.table.setItem(r, c, QTableWidgetItem(v))
                         max_lines -= 1
                         if max_lines <= 0:
                             break
@@ -231,20 +197,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 print("Файл успешно закрыт - ", file.closed)
 
 
-    def button_notes_clicked(self):
-        if self.field.get_cell_is_done(self.table.currentRow(), self.table.currentColumn()):
-            print('Cell is DONE!')
-        else:
-            print(self.table.currentRow(), self.table.currentColumn(), '-',
-                  self.field.get_cell_possible_value(self.table.currentRow(), self.table.currentColumn()))
-
     def button_single_clicked(self):
         print("Единицы!")
         res = self.field.hidden_single()
         if res:
-            item = QTableWidgetItem(str(res[2]))
-            item.setForeground(QBrush(QColor(0, 0, 255)))
-            self.table.setItem(res[0], res[1], item)
             self.field.crossing_out({"row": res[0], "column": res[1], "value": res[2]})
             self.field_widget.setValue(res[0], res[1], str(res[2]))
             self.update_notes_in_field()
@@ -285,22 +241,4 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         print("B")
         self.field_widget.showNotes(False)
 
-    def button_c_clicked(self):
-        print("C - Save!")
-        file_path = self.save_file_dialog()
-        if file_path:
-            # Сохраняем данные в файл
-            try:
-                with open(file_path, "w") as file:
-                    # Перебор всех строк и столбцов
-                    for row in range(9):
-                        for column in range(9):
-                            value = self.field_widget.get_cell_value(row, column)
-                            if value != '':
-                                file.write(f"{row}{column}{value}\n")
-            except FileNotFoundError:
-                print("Невозможно открыть файл")
-            except:
-                print("Ошибка при работе с файлом")
-            finally:
-                print("Файл успешно закрыт - ", file.closed)
+
