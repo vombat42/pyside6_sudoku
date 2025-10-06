@@ -1,4 +1,4 @@
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Signal
 from PySide6.QtGui import QFont, QKeyEvent
 from PySide6.QtWidgets import QWidget, QGridLayout
 
@@ -7,6 +7,9 @@ from cell_widget import CellWidget
 
 class FieldWidget(QWidget):
     """Кастомный виджет для одной ячейки"""
+    # Сигнал изменения ячейки
+    # signal_cell_changed = Signal(int, int, str)
+    signal_cell_changed = Signal(dict)
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -34,6 +37,9 @@ class FieldWidget(QWidget):
         # Текущая активная ячейка
         self.active_cell_index = None
 
+        # Признак - идет процесс создания задачи или уже идет ее решение?
+        self.is_being_solved = False
+
         # Включаем отслеживание клавиш для всего виджета
         self.setFocusPolicy(Qt.StrongFocus)
 
@@ -41,6 +47,11 @@ class FieldWidget(QWidget):
     def get_cell_value(self, row, column):
         return self.cell_widgets[row * 9 + column].getValue()
 
+    def set_is_being_solved(self):
+        self.is_being_solved = True
+
+    def get_is_being_solved(self) -> bool:
+        return self.is_being_solved
 
     def on_cell_clicked(self, event, cell_index):
         """Обработчик клика по ячейке"""
@@ -56,10 +67,25 @@ class FieldWidget(QWidget):
         text = event.text()
         # Обрабатываем разные типы клавиш
         if key in (Qt.Key_Delete, Qt.Key_Backspace) :
-            self.cell_widgets[self.active_cell_index].clear()
+            # очистка ячейки возможна, если идет процесс задания условия задачи
+            if not self.is_being_solved or self.cell_widgets[self.active_cell_index].getValue() == '':
+                # передаем сигнал об очистке ячейки - словарь с ключами (row, column, old_value, new_value)
+                # self.signal_cell_changed.emit(self.active_cell_index // 9, self.active_cell_index % 9, '')
+                self.signal_cell_changed.emit({'row': self.active_cell_index // 9,
+                                               'column': self.active_cell_index % 9,
+                                               'old_value': '',
+                                               'new_value': ''})
+                self.cell_widgets[self.active_cell_index].clear()
         # elif key in (Qt.Key_1, Qt.Key_2, Qt.Key_3, Qt.Key_4, Qt.Key_5, Qt.Key_6, Qt.Key_7, Qt.Key_8, Qt.Key_9) :
         elif text in ('1', '2', '3', '4', '5', '6', '7', '8', '9'):
-            self.cell_widgets[self.active_cell_index].setValue(text)
+            # изменение ячейки возможно, если идет процесс задания условия задачи, или если ячейка еще не заполнена
+            if not self.is_being_solved or self.cell_widgets[self.active_cell_index].getValue() == '':
+                # передаем сигнал об изменении ячейки (row, column, value)
+                self.signal_cell_changed.emit({'row': self.active_cell_index // 9,
+                                               'column': self.active_cell_index % 9,
+                                               'old_value': self.cell_widgets[self.active_cell_index].getValue(),
+                                               'new_value': text})
+                # self.cell_widgets[self.active_cell_index].setValue(text)
         elif key == Qt.Key_Up:
             self.set_active_cell(self.active_cell_index - 9)
         elif key == Qt.Key_Down:
@@ -84,7 +110,7 @@ class FieldWidget(QWidget):
                 cell.setActive(False)
 
 
-    def setItem(self, row, column, value):
+    def setValue(self, row, column, value):
         """Установка значения в ячейку"""
         self.cell_widgets[row * 9 + column].setValue(value)
 
@@ -97,6 +123,7 @@ class FieldWidget(QWidget):
     def showNotes(self, is_visible):
         for item in self.cell_widgets:
             item.showNotes(is_visible)
+
 
     def setNotes(self, row, column, notes_list):
         self.cell_widgets[row * 9 + column].setNotes(notes_list)

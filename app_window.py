@@ -63,15 +63,34 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.button_c.setCheckable(True)
         self.button_c.clicked.connect(self.button_c_clicked)
 
+        # CheckBox "показать заметки"
         self.notes_box.setCheckable(True)
-        self.notes_box.setChecked(True)
+        self.notes_box.setChecked(False)
         self.notes_box.checkStateChanged.connect(self.notes_box_changed)
 
+        # Игровое поле 9x9
         self.field_widget = FieldWidget()
         self.gl.addWidget(self.field_widget)
+        self.field_widget.signal_cell_changed.connect(self.cell_changed)
 
-        # Создаем игровое поле
+        # Создаем игровое поле (логика)
         self.field = Field()
+
+
+
+    def cell_changed(self, info: dict):
+        """Обработчик изменения ячейки"""
+        print("cell_changed", info)
+        if info['new_value'] == '':
+            self.field.clear_cell(info['row'], info['column'])
+        else:
+            # если такое значение в ячейке допустимо, присваиваем его
+            if self.field.set_cell_value(info['row'], info['column'], int(info['new_value'])):
+                self.field_widget.setValue(info['row'], info['column'], info['new_value'])
+                self.field.crossing_out({"row": info['row'], "column": info['column'], "value": int(info['new_value'])})
+                self.update_notes_in_field()
+            # else:
+            #     self.field_widget.setValue(info['row'], info['column'], info['old_value'])
 
 
     def notes_box_changed(self):
@@ -118,6 +137,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             print("Загрузка отменена")
             return None
 
+
     def on_cell_changed(self, row, column):
         """Обработчик изменения ячейки"""
         # print('changed')
@@ -153,6 +173,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     self.field.crossing_out({"row": r, "column": c, "value": int(item.text())})
 
         self.update_notes_in_field()
+        self.field_widget.set_is_being_solved()
 
 
 
@@ -196,7 +217,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 with open(file_path) as file:
                     for s in file.readlines():
                         r, c, v = int(s[0]), int(s[1]), s[2]
-                        self.field_widget.setItem(r, c, v)
+                        self.field_widget.setValue(r, c, v)
                         self.field.set_cell_value(r, c, int(v))
                         self.table.setItem(r, c, QTableWidgetItem(v))
                         max_lines -= 1
@@ -225,7 +246,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             item.setForeground(QBrush(QColor(0, 0, 255)))
             self.table.setItem(res[0], res[1], item)
             self.field.crossing_out({"row": res[0], "column": res[1], "value": res[2]})
-            self.field_widget.setItem(res[0], res[1], str(res[2]))
+            self.field_widget.setValue(res[0], res[1], str(res[2]))
             self.update_notes_in_field()
         else:
             print('нет единиц')

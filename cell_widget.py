@@ -15,7 +15,6 @@ class CellWidget(QWidget):
     def init_cellwidget(self):
         size = 60
         self.stylesheet_active = "padding: 0px; background-color: blue; text-align: center;"
-        # self.stylesheet_notactive = "padding: 0px; background-color: darkgrey; text-align: center;"
         self.stylesheet_notactive = "border: 1px solid yellow; border-radius: 2px; padding: 0px;"
         self.note_style = "border: 1px solid gray; border-radius: 4px; padding: 0px; background-color: green;"
         # фиксированный размер виджета
@@ -56,13 +55,6 @@ class CellWidget(QWidget):
         self.value_label.setFont(font_label)
         self.value_label.setAlignment(Qt.AlignCenter)
         self.value_label.setStyleSheet(self.stylesheet_notactive)
-        # self.value_label.setStyleSheet("""
-        #     QWidget {
-        #         padding: 0px;
-        #         background-color: blue;
-        #         text-align: center;
-        #     }
-        # """)
 
         # Создаем stacked layout
         self.stacked_layout = QStackedLayout()
@@ -70,6 +62,7 @@ class CellWidget(QWidget):
         # Добавляем страницы в stacked layout
         self.stacked_layout.addWidget(self.notes_page)
         self.stacked_layout.addWidget(self.value_label)
+        self.stacked_layout.setCurrentIndex(1) # заметки скрыты
 
         self.setStyleSheet(self.stylesheet_notactive)
 
