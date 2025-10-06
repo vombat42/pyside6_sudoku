@@ -15,10 +15,10 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QHeaderView,
-    QLabel, QLayout, QMainWindow, QMenuBar,
-    QPushButton, QSizePolicy, QStatusBar, QTableWidget,
-    QTableWidgetItem, QWidget)
+from PySide6.QtWidgets import (QApplication, QCheckBox, QFrame, QGridLayout,
+    QHeaderView, QLabel, QLayout, QMainWindow,
+    QMenuBar, QPushButton, QSizePolicy, QStatusBar,
+    QTableWidget, QTableWidgetItem, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -251,6 +251,10 @@ class Ui_MainWindow(object):
         self.button_c = QPushButton(self.centralwidget)
         self.button_c.setObjectName(u"button_c")
         self.button_c.setGeometry(QRect(680, 700, 71, 60))
+        self.notes_box = QCheckBox(self.centralwidget)
+        self.notes_box.setObjectName(u"notes_box")
+        self.notes_box.setGeometry(QRect(30, 720, 171, 23))
+        self.notes_box.setTristate(False)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
@@ -295,5 +299,6 @@ class Ui_MainWindow(object):
         self.button_a.setText(QCoreApplication.translate("MainWindow", u"A", None))
         self.button_b.setText(QCoreApplication.translate("MainWindow", u"B", None))
         self.button_c.setText(QCoreApplication.translate("MainWindow", u"C", None))
+        self.notes_box.setText(QCoreApplication.translate("MainWindow", u"\u043f\u043e\u043a\u0430\u0437\u0430\u0442\u044c \u0437\u0430\u043c\u0435\u0442\u043a\u0438", None))
     # retranslateUi
 

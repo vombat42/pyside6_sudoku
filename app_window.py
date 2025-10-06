@@ -63,11 +63,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.button_c.setCheckable(True)
         self.button_c.clicked.connect(self.button_c_clicked)
 
+        self.notes_box.setCheckable(True)
+        self.notes_box.setChecked(True)
+        self.notes_box.checkStateChanged.connect(self.notes_box_changed)
+
         self.field_widget = FieldWidget()
         self.gl.addWidget(self.field_widget)
 
         # Создаем игровое поле
         self.field = Field()
+
+
+    def notes_box_changed(self):
+        self.field_widget.showNotes(self.notes_box.isChecked())
 
     def update_notes_in_field(self):
         """обновляет заметки в виджете игрового поля"""
@@ -257,5 +265,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.field_widget.showNotes(False)
 
     def button_c_clicked(self):
-        print("C")
-        self.field_widget.setItem(2, 3, '5')
+        print("C - Save!")
+        file_path = self.save_file_dialog()
+        if file_path:
+            # Сохраняем данные в файл
+            try:
+                with open(file_path, "w") as file:
+                    # Перебор всех строк и столбцов
+                    for row in range(9):
+                        for column in range(9):
+                            value = self.field_widget.get_cell_value(row, column)
+                            if value != '':
+                                file.write(f"{row}{column}{value}\n")
+            except FileNotFoundError:
+                print("Невозможно открыть файл")
+            except:
+                print("Ошибка при работе с файлом")
+            finally:
+                print("Файл успешно закрыт - ", file.closed)

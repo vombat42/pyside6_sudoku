@@ -5,6 +5,8 @@ from PySide6.QtWidgets import QWidget, QLabel, QGridLayout, QStackedLayout
 
 class CellWidget(QWidget):
     """Кастомный виджет для одной ячейки"""
+    # self.stylesheet_active = "padding: 0px; background-color: blue; text-align: center;"
+    # self.stylesheet_notactive = "padding: 0px; background-color: darkgrey; text-align: center;"
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -12,6 +14,10 @@ class CellWidget(QWidget):
 
     def init_cellwidget(self):
         size = 60
+        self.stylesheet_active = "padding: 0px; background-color: blue; text-align: center;"
+        # self.stylesheet_notactive = "padding: 0px; background-color: darkgrey; text-align: center;"
+        self.stylesheet_notactive = "border: 1px solid yellow; border-radius: 2px; padding: 0px;"
+        self.note_style = "border: 1px solid gray; border-radius: 4px; padding: 0px; background-color: green;"
         # фиксированный размер виджета
         self.setFixedSize(size, size)  # ширина, высота
 
@@ -31,7 +37,6 @@ class CellWidget(QWidget):
 
         # список меткок для отображения заметок ячейки
         self.notes_list = [QLabel()] * 9
-        note_style = "border: 1px solid gray; border-radius: 4px; padding: 0px; background-color: green;"
         font = QFont()
         font.setPointSize(8)
         for i in range(9):
@@ -39,7 +44,7 @@ class CellWidget(QWidget):
             self.notes_list[i].setMaximumSize(QSize(16, 16))
             self.notes_list[i].setMinimumSize(QSize(16, 16))
             self.notes_list[i].setFont(font)
-            self.notes_list[i].setStyleSheet(note_style)
+            self.notes_list[i].setStyleSheet(self.note_style)
             self.notesLayout.addWidget(self.notes_list[i], i // 3, i % 3, 1, 1)
 
         self.notes_page.setLayout(self.notesLayout)
@@ -50,13 +55,14 @@ class CellWidget(QWidget):
         self.value_label = QLabel('')
         self.value_label.setFont(font_label)
         self.value_label.setAlignment(Qt.AlignCenter)
-        self.value_label.setStyleSheet("""
-            QWidget {
-                padding: 0px;
-                background-color: blue;
-                text-align: center;
-            }
-        """)
+        self.value_label.setStyleSheet(self.stylesheet_notactive)
+        # self.value_label.setStyleSheet("""
+        #     QWidget {
+        #         padding: 0px;
+        #         background-color: blue;
+        #         text-align: center;
+        #     }
+        # """)
 
         # Создаем stacked layout
         self.stacked_layout = QStackedLayout()
@@ -65,11 +71,13 @@ class CellWidget(QWidget):
         self.stacked_layout.addWidget(self.notes_page)
         self.stacked_layout.addWidget(self.value_label)
 
-        self.setStyleSheet("border: 1px solid yellow; border-radius: 2px; padding: 0px;")
+        self.setStyleSheet(self.stylesheet_notactive)
 
         # Устанавливаем layout для виджета
         self.setLayout(self.stacked_layout)
 
+    def getValue(self):
+        return self.value_label.text()
 
     def setNotes(self, notes):
         if self.value_label.text() == '':
@@ -79,6 +87,11 @@ class CellWidget(QWidget):
                 else:
                     self.notesLayout.itemAt(i).widget().setHidden(True)
 
+    def setActive(self, param):
+        if param:
+            self.setStyleSheet(self.stylesheet_active)
+        else:
+            self.setStyleSheet(self.stylesheet_notactive)
 
     def showNotes(self, is_visible):
         if is_visible and self.value_label.text() == '':
