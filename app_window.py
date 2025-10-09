@@ -54,14 +54,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # CheckBox "показать заметки"
         self.notes_box.setCheckable(True)
         self.notes_box.setChecked(False)
+        self.notes_box.setDisabled(True)
         self.notes_box.checkStateChanged.connect(self.notes_box_changed)
 
         # Игровое поле 9x9
         self.verticalLayoutWidget = QWidget(self.centralwidget)
         # self.verticalLayoutWidget.setObjectName(u"verticalLayoutWidget")
-        self.verticalLayoutWidget.setGeometry(QRect(10, 10, 600, 600))
+        self.verticalLayoutWidget.setGeometry(QRect(10, 10, 610, 610))
         self.vl = QVBoxLayout(self.verticalLayoutWidget)
         self.vl.setContentsMargins(0, 0, 0, 0)
+        self.vl.setSpacing(0)
         # self.vl.setObjectName(u"vl")
 
         self.field_widget = FieldWidget()
@@ -146,6 +148,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.button_naked_triple.setDisabled(False)
         self.button_naked_triple.setDisabled(False)
         self.button_hidden_triple.setDisabled(False)
+        self.notes_box.setDisabled(False)
         # формируем заметки
         for r in range(9):
             for c in range(9):

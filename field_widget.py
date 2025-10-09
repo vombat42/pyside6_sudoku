@@ -16,42 +16,52 @@ class FieldWidget(QWidget):
 
     def init_fieldwidget(self):
         """Конструктор"""
+        self.stylesheet_field = "border: none; padding: 0px; background-color: black;"
         self.color_lines = Qt.black
-        self.color_lines = Qt.white
         self.size = 600
+        l = 0 # компенсация толщины линий
         # фиксированный размер виджета
-        self.setFixedSize(self.size, self.size)  # ширина, высота
+        self.setFixedSize(self.size + l, self.size + l)  # ширина, высота
+        self.setStyleSheet(self.stylesheet_field)
+
+        self.fieldLayout = QGridLayout()
+        self.fieldLayout.setSpacing(0)
+        self.fieldLayout.setContentsMargins(0, 0, 0, 0)
+
+
 
         # Список для хранения ссылок на виджеты ячеек
         self.cell_widgets = list()
+        # Список для хранения ссылок на виджеты блоков (3*3)
+        self.block_widgets = list()
 
-        self.fieldLayout = QGridLayout()
-        # self.fieldLayout.setSpacing(0)
-        # self.fieldLayout.setContentsMargins(0,0,0,0)
 
-        k = 0
-        m = 0
+        for b in range(9):
+            container = QFrame()
+            # container.setStyleSheet(f"border: 1px solid magenta;")
+            container.setFixedSize(self.size // 3, self.size // 3)
+            block = QGridLayout()
+            block.setContentsMargins(0, 0, 0, 0)
+            block.setSpacing(0)
+            container.setLayout(block)
+            self.fieldLayout.addWidget(container, b // 3, b % 3, 1, 1)
+            # self.fieldLayout.addLayout(block, b // 3, b % 3, 1, 1)
+            self.block_widgets.append(block)
+            # block = QGridLayout()
+            # self.fieldLayout.addLayout(block, b // 3, b % 3, 1, 1)
+            # self.block_widgets.append(block)
+
         for i in range(81):
+            cell = CellWidget()
+            cell.mousePressEvent = lambda event, idx=i: self.on_cell_clicked(event, idx)
+            # block_number = i // 3 -  i // 9 * 3 + i // 27 * 3
+            block_number = i // 3 -  (i // 9 - i // 27) * 3
+            r = i // 9 - i // 27 * 3
+            c = i % 3
+            print(i, block_number, r, c)
+            self.block_widgets[block_number].addWidget(cell, r, c, 1, 1)
+            self.cell_widgets.append(cell)
 
-            widget = CellWidget()
-            widget.mousePressEvent = lambda event, idx=i: self.on_cell_clicked(event, idx)
-            if i == 27 or i == 54:
-                space = QLabel()
-                space.setFixedSize(10, 10)
-                space.setText('*')
-                # self.fieldLayout.addWidget(space, i // 9 + k, i % 9 + m, 1, 1)
-                self.fieldLayout.addWidget(space)
-                k += 1
-            # if i == 3 or i == 6:
-            if i % 3 == 0 and i != 0:
-                space = QLabel()
-                space.setFixedSize(10, 10)
-                space.setText('+')
-                # self.fieldLayout.addWidget(space, i // 9 + k, i % 9 + m, 1, 1)
-                self.fieldLayout.addWidget(space)
-                m += 1
-            self.fieldLayout.addWidget(widget, i // 9 + k, i % 9 + m, 1, 1)
-            self.cell_widgets.append(widget)
 
         # Устанавливаем layout для виджета
         self.setLayout(self.fieldLayout)
@@ -73,15 +83,15 @@ class FieldWidget(QWidget):
         painter.setPen(QPen(self.color_lines, 4))
         s = self.size // 3
         # Горизонтальные линии
-        painter.drawLine(0, 0, self.size, 0)
-        # painter.drawLine(0, s, self.size, s)
-        # painter.drawLine(0, s * 2, self.size, s * 2)
-        painter.drawLine(0, self.size, self.size, self.size)
-        # Вертикальные линии
-        painter.drawLine(0, 0, 0, self.size)
-        # painter.drawLine(s, 0, s, self.size)
-        # painter.drawLine(s * 2, 0, s * 2, self.size)
-        painter.drawLine(self.size, 0, self.size, self.size)
+        # painter.drawLine(0, 0, self.size, 0)
+        # # painter.drawLine(0, s, self.size, s)
+        # # painter.drawLine(0, s * 2, self.size, s * 2)
+        # painter.drawLine(0, self.size, self.size, self.size)
+        # # Вертикальные линии
+        # painter.drawLine(0, 0, 0, self.size)
+        # # painter.drawLine(s, 0, s, self.size)
+        # # painter.drawLine(s * 2, 0, s * 2, self.size)
+        # painter.drawLine(self.size, 0, self.size, self.size)
 
         # # тонкие линии
         # painter.setPen(QPen(self.color_lines, 1))
