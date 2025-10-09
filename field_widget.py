@@ -1,6 +1,6 @@
-from PySide6.QtCore import Qt, Signal
-from PySide6.QtGui import QFont, QKeyEvent
-from PySide6.QtWidgets import QWidget, QGridLayout
+from PySide6.QtCore import Qt, Signal, QRect
+from PySide6.QtGui import QFont, QKeyEvent, QPainter, QPen
+from PySide6.QtWidgets import QWidget, QGridLayout, QFrame, QLabel
 
 from cell_widget import CellWidget
 
@@ -8,7 +8,6 @@ from cell_widget import CellWidget
 class FieldWidget(QWidget):
     """Кастомный виджет для одной ячейки"""
     # Сигнал изменения ячейки
-    # signal_cell_changed = Signal(int, int, str)
     signal_cell_changed = Signal(dict)
 
     def __init__(self, parent=None):
@@ -17,18 +16,41 @@ class FieldWidget(QWidget):
 
     def init_fieldwidget(self):
         """Конструктор"""
+        self.color_lines = Qt.black
+        self.color_lines = Qt.white
+        self.size = 600
         # фиксированный размер виджета
-        self.setFixedSize(600, 600)  # ширина, высота
+        self.setFixedSize(self.size, self.size)  # ширина, высота
 
         # Список для хранения ссылок на виджеты ячеек
         self.cell_widgets = list()
 
         self.fieldLayout = QGridLayout()
+        # self.fieldLayout.setSpacing(0)
+        # self.fieldLayout.setContentsMargins(0,0,0,0)
 
+        k = 0
+        m = 0
         for i in range(81):
+
             widget = CellWidget()
             widget.mousePressEvent = lambda event, idx=i: self.on_cell_clicked(event, idx)
-            self.fieldLayout.addWidget(widget, i // 9, i % 9, 1, 1)
+            if i == 27 or i == 54:
+                space = QLabel()
+                space.setFixedSize(10, 10)
+                space.setText('*')
+                # self.fieldLayout.addWidget(space, i // 9 + k, i % 9 + m, 1, 1)
+                self.fieldLayout.addWidget(space)
+                k += 1
+            # if i == 3 or i == 6:
+            if i % 3 == 0 and i != 0:
+                space = QLabel()
+                space.setFixedSize(10, 10)
+                space.setText('+')
+                # self.fieldLayout.addWidget(space, i // 9 + k, i % 9 + m, 1, 1)
+                self.fieldLayout.addWidget(space)
+                m += 1
+            self.fieldLayout.addWidget(widget, i // 9 + k, i % 9 + m, 1, 1)
             self.cell_widgets.append(widget)
 
         # Устанавливаем layout для виджета
@@ -42,6 +64,42 @@ class FieldWidget(QWidget):
 
         # Включаем отслеживание клавиш для всего виджета
         self.setFocusPolicy(Qt.StrongFocus)
+
+
+    def paintEvent(self, event):
+        """Линии"""
+        painter = QPainter(self)
+        # толстые линии
+        painter.setPen(QPen(self.color_lines, 4))
+        s = self.size // 3
+        # Горизонтальные линии
+        painter.drawLine(0, 0, self.size, 0)
+        # painter.drawLine(0, s, self.size, s)
+        # painter.drawLine(0, s * 2, self.size, s * 2)
+        painter.drawLine(0, self.size, self.size, self.size)
+        # Вертикальные линии
+        painter.drawLine(0, 0, 0, self.size)
+        # painter.drawLine(s, 0, s, self.size)
+        # painter.drawLine(s * 2, 0, s * 2, self.size)
+        painter.drawLine(self.size, 0, self.size, self.size)
+
+        # # тонкие линии
+        # painter.setPen(QPen(self.color_lines, 1))
+        # s = self.size // 9
+        # # Горизонтальные линии
+        # painter.drawLine(0, s, self.size, s)
+        # painter.drawLine(0, s * 2, self.size, s * 2)
+        # painter.drawLine(0, s * 4, self.size, s * 4)
+        # painter.drawLine(0, s * 5, self.size, s * 5)
+        # painter.drawLine(0, s * 7, self.size, s * 7)
+        # painter.drawLine(0, s * 8, self.size, s * 8)
+        # # Вертикальные линии
+        # painter.drawLine(s , 0, s, self.size)
+        # painter.drawLine(s * 2, 0, s * 2, self.size)
+        # painter.drawLine(s * 4, 0, s * 4, self.size)
+        # painter.drawLine(s * 5, 0, s * 5, self.size)
+        # painter.drawLine(s * 7, 0, s * 7, self.size)
+        # painter.drawLine(s * 8, 0, s * 8, self.size)
 
 
     def get_cell_value(self, row, column):
@@ -66,7 +124,10 @@ class FieldWidget(QWidget):
         key = event.key()
         text = event.text()
         # Обрабатываем разные типы клавиш
-        if key in (Qt.Key_Delete, Qt.Key_Backspace) :
+        if key == Qt.Key_Escape:
+            self.set_active_cell(None)
+
+        if key in (Qt.Key_Delete, Qt.Key_Backspace):
             # очистка ячейки возможна, если идет процесс задания условия задачи
             if not self.is_being_solved or self.cell_widgets[self.active_cell_index].getValue() == '':
                 # передаем сигнал об очистке ячейки - словарь с ключами (row, column, new_value)
@@ -95,15 +156,14 @@ class FieldWidget(QWidget):
 
 
     def set_active_cell(self, index: int):
-        if index > 80 or index < 0:
+        if index != None and (index > 80 or index < 0):
             return
+        if self.active_cell_index != None:
+            self.cell_widgets[self.active_cell_index].setActive(False)
+        # при index == None - нет активных ячеек
+        if index != None:
+            self.cell_widgets[index].setActive(True)
         self.active_cell_index = index
-        # Сбрасываем стиль всех Label
-        for i, cell in enumerate(self.cell_widgets):
-            if i == index:
-                cell.setActive(True)
-            else:
-                cell.setActive(False)
 
 
     def setValue(self, row, column, value):

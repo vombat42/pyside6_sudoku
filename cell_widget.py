@@ -14,17 +14,24 @@ class CellWidget(QWidget):
 
     def init_cellwidget(self):
         size = 60
-        self.stylesheet_active = "padding: 0px; background-color: blue; text-align: center;"
-        self.stylesheet_notactive = "border: 1px solid yellow; border-radius: 2px; padding: 0px;"
-        self.note_style = "border: 1px solid gray; border-radius: 4px; padding: 0px; background-color: green;"
+        size_notes = 16
+        margin = 0
+        self.stylesheet_active = "border: 1px solid yellow; border-radius: 2px; padding: 0px; background-color: blue; text-align: center;"
+        self.stylesheet_notactive = "border: 1px solid yellow; border-radius: 2px; padding: 0px; background-color: green;"
+        # self.stylesheet_notactive = "padding: 0px;"
+        self.note_style = "border: 1px solid gray; border-radius: 5px; padding: 0px; color: black; background-color: gray; text-align: center;"
+        # self.stylesheet_active = "padding: 0px; background-color: blue; text-align: center;"
+        # self.note_style = "border: 1px solid gray; border-radius: 5px; padding: 0px; background-color: green;"
+        # self.stylesheet_notactive = "border: 1px solid yellow; border-radius: 2px; padding: 0px;"
         # фиксированный размер виджета
         self.setFixedSize(size, size)  # ширина, высота
+        self.setContentsMargins(0,0,0,0)
 
         # Первая страница - grid layout
         self.notes_page = QWidget()
         self.notesLayout = QGridLayout()
-        self.notesLayout.setSpacing(3)
-        self.notesLayout.setContentsMargins(3, 3, 3, 3)
+        self.notesLayout.setSpacing(margin)
+        self.notesLayout.setContentsMargins(margin, margin, margin, margin)
         self.notesLayout.setRowMinimumHeight(0, size//3)
         self.notesLayout.setRowMinimumHeight(1, size//3)
         self.notesLayout.setRowMinimumHeight(2, size//3)
@@ -40,8 +47,8 @@ class CellWidget(QWidget):
         font.setPointSize(8)
         for i in range(9):
             self.notes_list[i] = QLabel(str(i + 1))
-            self.notes_list[i].setMaximumSize(QSize(16, 16))
-            self.notes_list[i].setMinimumSize(QSize(16, 16))
+            self.notes_list[i].setMaximumSize(QSize(size_notes, size_notes))
+            self.notes_list[i].setMinimumSize(QSize(size_notes, size_notes))
             self.notes_list[i].setFont(font)
             self.notes_list[i].setStyleSheet(self.note_style)
             self.notesLayout.addWidget(self.notes_list[i], i // 3, i % 3, 1, 1)
@@ -52,9 +59,11 @@ class CellWidget(QWidget):
         font_label = QFont()
         font_label.setPointSize(20)
         self.value_label = QLabel('')
+        self.value_label.setFixedSize(size, size)
+        self.value_label.setContentsMargins(0,0,0,0)
         self.value_label.setFont(font_label)
         self.value_label.setAlignment(Qt.AlignCenter)
-        self.value_label.setStyleSheet(self.stylesheet_notactive)
+
 
         # Создаем stacked layout
         self.stacked_layout = QStackedLayout()
@@ -92,10 +101,12 @@ class CellWidget(QWidget):
         else:
             self.stacked_layout.setCurrentIndex(1)
 
-    def mousePressEvent(self, event: QMouseEvent):
-        """Обрабатывает нажатие мыши"""
-        if event.button() == Qt.LeftButton:
-            self.setStyleSheet("border: 2px solid red; border-radius: 2px; padding: 0px;")
+    # def mousePressEvent(self, event: QMouseEvent):
+    #     """Обрабатывает нажатие мыши"""
+    #     if event.button() == Qt.LeftButton:
+    #         print('mouse')
+    #         self.setActive(True)
+    #         # self.setStyleSheet("border: 2px solid red; border-radius: 2px; padding: 0px;")
 
     def setValue(self, value):
         self.value_label.setText(value)

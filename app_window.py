@@ -1,5 +1,5 @@
-from PySide6.QtWidgets import QMainWindow, QFileDialog
-
+from PySide6.QtCore import QRect
+from PySide6.QtWidgets import QMainWindow, QFileDialog, QWidget, QVBoxLayout
 
 from field import Field
 from field_widget import FieldWidget
@@ -57,8 +57,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.notes_box.checkStateChanged.connect(self.notes_box_changed)
 
         # Игровое поле 9x9
+        self.verticalLayoutWidget = QWidget(self.centralwidget)
+        # self.verticalLayoutWidget.setObjectName(u"verticalLayoutWidget")
+        self.verticalLayoutWidget.setGeometry(QRect(10, 10, 600, 600))
+        self.vl = QVBoxLayout(self.verticalLayoutWidget)
+        self.vl.setContentsMargins(0, 0, 0, 0)
+        # self.vl.setObjectName(u"vl")
+
         self.field_widget = FieldWidget()
-        self.gl.addWidget(self.field_widget)
+        # self.gl.addWidget(self.field_widget)
+        self.vl.addWidget(self.field_widget)
         self.field_widget.signal_cell_changed.connect(self.cell_changed)
 
         # Создаем игровое поле (логика)
